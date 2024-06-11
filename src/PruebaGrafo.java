@@ -6,6 +6,7 @@ import java.util.Objects;
 public class PruebaGrafo {
 
     public static void main(String[] args) {
+        /*
 
               TGrafoDirigido gd = (TGrafoDirigido) UtilGrafos.cargarGrafo("./src/aeropuertos_1.txt","./src/conexiones_1.txt",
                 false, TGrafoDirigido.class);
@@ -21,8 +22,23 @@ public class PruebaGrafo {
             }
             System.out.println();
             System.out.println("Centro del grafo: " + gd.centroDelGrafo());
+         */
 
+              //Ejercicio 1
+              TGrafoDirigido gd = (TGrafoDirigido) UtilGrafos.cargarGrafo("./src/aeropuertos.txt","./src/conexiones.txt",
+                false, TGrafoDirigido.class);
 
+            Object[] etiquetasarray = gd.getEtiquetasOrdenado();
+
+            Double[][] matriz = UtilGrafos.obtenerMatrizCostos(gd.getVertices());
+            UtilGrafos.imprimirMatrizMejorado(matriz, gd.getVertices(), "Matriz");
+            Double[][] mfloyd = gd.floyd();
+            UtilGrafos.imprimirMatrizMejorado(mfloyd, gd.getVertices(), "Matriz luego de FLOYD");
+            for (int i = 0; i < etiquetasarray.length; i++) {
+                System.out.println("excentricidad de " + etiquetasarray[i] + " : " + gd.obtenerExcentricidad((Comparable) etiquetasarray[i]));
+            }
+            System.out.println();
+            System.out.println("Centro del grafo: " + gd.centroDelGrafo());
         /*
 
         ArrayList<TVertice> vertices = new ArrayList<>();
@@ -76,6 +92,30 @@ public class PruebaGrafo {
 
         Double[][] matrizFloyd = grafoDirigido.floyd();
         UtilGrafos.imprimirMatrizMejorado(matrizFloyd, grafoDirigido.getVertices(), "Matriz de costos mínimos FLOYD");
+         */
+
+        /*
+            Preguntas ejercicio1:
+
+            El costo de volar de Montevideo a Rio de Janeiro es:
+            a. 1980.
+            b. 3780.-Correcto
+            c. 1000.
+            d. 980.
+
+            El costo de volar de Montevideo a Curitiba es:
+            a. 2580-Correcto
+            b. 3780.
+            c. 1980.
+            d. Ninguna de las anteriores
+
+            3. Los servicios de mantenimiento se instalan en:
+            a. Montevideo
+            b. Punta del Este
+            c. Curitiba -Correcto
+            d. Porto Alegre
+
+            Supongo que se referirá al centro el grafo
          */
     }
 }
