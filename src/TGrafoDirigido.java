@@ -1,14 +1,12 @@
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.TreeMap;
+import javax.naming.spi.InitialContextFactory;
+import java.util.*;
 
 public class TGrafoDirigido implements IGrafoDirigido {
 
     private Map<Comparable, TVertice> vertices; // vertices del grafo.-
 
+    private static final double INFINITO = Double.POSITIVE_INFINITY;
     public TGrafoDirigido(Collection<TVertice> vertices, Collection<TArista> aristas) {
         this.vertices = new HashMap<>();
         for (TVertice vertice : vertices) {
@@ -142,17 +140,100 @@ public class TGrafoDirigido implements IGrafoDirigido {
 
     @Override
     public Comparable centroDelGrafo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        /*
+        Para obtener el centro de un grafo hacer:
+        – aplicar Floyd para obtener el largo de los caminos,
+        – encontrar el máximo valor en cada columna i, y con ello se obtiene la excentricidad de i,
+        – encontrar el vértice con excentricidad mínima: el
+        centro de G
+         */
+        //Inicializamos a la excentricidad minima con el valor máximo que puede tener un double, para asegurarnos que en la primera iteracción
+        //la excentricidad calculada sea menor a ese valor.
+
+        Comparable etiquetaVerticeCentro = null;
+        double excentricidadMinima = Double.MAX_VALUE;
+
+        for(Map.Entry<Comparable,Double> entry : obtenerExentricidadesGrafo().entrySet()) {
+            if(excentricidadMinima > entry.getValue()) {
+                excentricidadMinima = entry.getValue();
+                etiquetaVerticeCentro = entry.getKey();
+            }
+        }
+        return etiquetaVerticeCentro;
+    }
+
+    private Map<Comparable, Double> obtenerExentricidadesGrafo() {
+        Map<Comparable,Double> resultado = new HashMap<>();
+        Double[][] matrizFloyd = floyd();
+        Comparable[] etiquetas = new Comparable[vertices.size()];
+        int i = 0;
+        for(Comparable clave : vertices.keySet()) {
+            etiquetas[i] = clave;
+            i++;
+        }
+
+        for(int col = 0; col < vertices.size(); col++) {
+            Double maximoValorEnI = 0.0;
+            for(int fil = 0; fil < vertices.size(); fil++) {
+                if(maximoValorEnI < matrizFloyd[fil][col]) {
+                    maximoValorEnI = matrizFloyd[fil][col];
+                }
+            }
+            resultado.put(etiquetas[col], maximoValorEnI);
+        }
+        return resultado;
     }
 
     @Override
     public Double[][] floyd() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        /*
+         int n = vertices.size();
+        Double[][] matrizCaminosMasCortos = new Double[n][n];
+
+        //Almacenamos las claves de los vértices para así acceder a la clave i y j
+        List<Comparable> etiquetasVertices = new ArrayList<>(vertices.keySet());
+
+        //FORMAMOS LA MATRIZ
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(i == j) { //El vértice de origen y el vértice de destino son los mismos, por ende el camino tiene costo 0.
+                   matrizCaminosMasCortos[i][j] = 0.0;
+                } else{
+                    //Obtenemos los costos de las aristas
+                    TVertice verticeOrigen = vertices.get(etiquetasVertices.get(i));
+                    TVertice verticeDestino = vertices.get(etiquetasVertices.get(j));
+                    Double costoArista = verticeOrigen.obtenerCostoAdyacencia(verticeDestino);
+
+                    //Existe una arista directa
+                    if(costoArista != Double.MAX_VALUE) {
+                        matrizCaminosMasCortos[i][j] = costoArista;
+                    } else {
+                        matrizCaminosMasCortos[i][j] = INFINITO;
+                    }
+                }
+            }
+        }
+         */
+        Double[][] matriz = UtilGrafos.obtenerMatrizCostos(vertices);
+
+        //ALGORITMO DE FLOYD-WARSHALL
+
+        for(int k = 0; k < vertices.size(); k++) {
+            for(int i = 0; i < vertices.size(); i++) {
+                for(int j = 0; j < vertices.size(); j++) {
+                    if((matriz[i][k] + matriz[k][j]) < matriz[i][j]) {
+                        matriz[i][j] = matriz[i][k] + matriz[k][j];
+                    }
+                }
+            }
+        }
+
+        return matriz;
     }
 
     @Override
     public Comparable obtenerExcentricidad(Comparable etiquetaVertice) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return obtenerExentricidadesGrafo().get(etiquetaVertice);
     }
 
     @Override
@@ -164,5 +245,6 @@ public class TGrafoDirigido implements IGrafoDirigido {
     public boolean eliminarVertice(Comparable nombreVertice) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 
 }

@@ -6,7 +6,7 @@ import java.util.Objects;
 public class PruebaGrafo {
 
     public static void main(String[] args) {
-        /*
+
               TGrafoDirigido gd = (TGrafoDirigido) UtilGrafos.cargarGrafo("./src/aeropuertos_1.txt","./src/conexiones_1.txt",
                 false, TGrafoDirigido.class);
 
@@ -22,8 +22,8 @@ public class PruebaGrafo {
             System.out.println();
             System.out.println("Centro del grafo: " + gd.centroDelGrafo());
 
-         */
 
+        /*
 
         ArrayList<TVertice> vertices = new ArrayList<>();
         ArrayList<TArista> aristas = new ArrayList<>();
@@ -73,5 +73,9 @@ public class PruebaGrafo {
         TGrafoDirigido grafoDirigido = new TGrafoDirigido(vertices, aristas);
         Double[][] matriz = UtilGrafos.obtenerMatrizCostos(grafoDirigido.getVertices());
         UtilGrafos.imprimirMatrizMejorado(matriz, grafoDirigido.getVertices(), "matriz Ejercicio 1");
+
+        Double[][] matrizFloyd = grafoDirigido.floyd();
+        UtilGrafos.imprimirMatrizMejorado(matrizFloyd, grafoDirigido.getVertices(), "Matriz de costos mínimos FLOYD");
+         */
     }
 }
