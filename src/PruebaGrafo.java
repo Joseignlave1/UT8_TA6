@@ -28,6 +28,10 @@ public class PruebaGrafo {
               TGrafoDirigido gd = (TGrafoDirigido) UtilGrafos.cargarGrafo("./src/aeropuertos.txt","./src/conexiones.txt",
                 false, TGrafoDirigido.class);
 
+              TVertice verticeMontevideo = new TVertice("Montevideo");
+              gd.insertarVertice(verticeMontevideo);
+            TVertice verticeRioDeJaneiro = new TVertice("RioDeJaneiro");
+            gd.insertarVertice(verticeRioDeJaneiro);
             Object[] etiquetasarray = gd.getEtiquetasOrdenado();
 
             Double[][] matriz = UtilGrafos.obtenerMatrizCostos(gd.getVertices());
@@ -39,6 +43,14 @@ public class PruebaGrafo {
             }
             System.out.println();
             System.out.println("Centro del grafo: " + gd.centroDelGrafo());
+
+            boolean[][] mWarshall = gd.warshall();
+            UtilGrafos.imprimirMatrizWarshall(mWarshall,gd.getVertices(), "Matriz luego de Warshall");
+
+            //gd.bpf();
+            gd.bpfConVerticeInicial(verticeMontevideo);
+
+            gd.todosLosCaminos(verticeMontevideo,verticeRioDeJaneiro);
         /*
 
         ArrayList<TVertice> vertices = new ArrayList<>();
@@ -117,5 +129,58 @@ public class PruebaGrafo {
 
             Supongo que se referirá al centro el grafo
          */
+
+        /*
+          Ejercicio 2:
+            Ejecutando esta funcionalidad del programa desarrollado, responde (y verifica manualmente!!!!):
+            • ¿Existen conexión(es) entre Montevideo y Curitiba? SI
+            • ¿Existen conexión(es) entre Porto Alegre y Santos? SI
+         */
+
+        //Ejercicio 3:
+
+        /*
+            1)
+            TGrafoDirigido gd = (TGrafoDirigido) UtilGrafos.cargarGrafo("./src/aeropuertos.txt","./src/conexiones.txt",
+            false, TGrafoDirigido.class);
+
+            Object[] etiquetasarray = gd.getEtiquetasOrdenado();
+
+            Double[][] matriz = UtilGrafos.obtenerMatrizCostos(gd.getVertices());
+            UtilGrafos.imprimirMatrizMejorado(matriz, gd.getVertices(), "Matriz");
+            Double[][] mfloyd = gd.floyd();
+            UtilGrafos.imprimirMatrizMejorado(mfloyd, gd.getVertices(), "Matriz luego de FLOYD");
+            for (int i = 0; i < etiquetasarray.length; i++) {
+                System.out.println("excentricidad de " + etiquetasarray[i] + " : " + gd.obtenerExcentricidad((Comparable) etiquetasarray[i]));
+            }
+            System.out.println();
+            System.out.println("Centro del grafo: " + gd.centroDelGrafo());
+
+            boolean[][] mWarshall = gd.warshall();
+            UtilGrafos.imprimirMatrizWarshall(mWarshall,gd.getVertices(), "Matriz luego de Warshall");
+
+            gd.bpf();
+
+            2)
+            El orden de tiempo de ejecución es O(n + m) donde n es el número de vértices y m el número de aristas.
+
+            3)
+            Se visitan todos los vértices del grafo siempre y cuándo el grafo sea conexo, si no es conexo se visitarán todos los vértices alcanzables desde el
+            vértice inicial(teniendo en cuénta la implementación de bpf que recibe un vértice inicial por parámetro)
+
+            En el caso de que el grafo no sea conexo, lo que haría sería agregar a una lista los vértices alcanzables por visitar, a medida que los voy visitando
+            los elimino de la lista, cuándo la lista este vacía, entonces busco los vértices que restan del grafo sin visitar, estos vendrían a ser los vértices del otro
+            subgrafo, selecciono otro vértice inicial, los agrego a la lista y  a medida que los voy visitando los elimino, cuándo la lista esté vacía entonces quiere decir que visité el subgrafo restante.
+
+            4)
+
+            Primero iteraría sobre los adyacentes de ese vértice destino, en un bucle que vaya iterando sobre cada vértice su adyacente, guardando en una lista
+            las etiquetas de los vértices para así formar el camino, el bucle finalizaría cuándo la etiqueta de uno de los vértices sea igual al vértice de destino
+            indicando que se ha completado el camino.
+
+            finalmente devolvería la lista con todos los posibles vértices desde el vértice de origen hasta el vértice de destino.
+         */
+
+
     }
 }

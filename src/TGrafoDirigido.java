@@ -1,4 +1,6 @@
 
+import jdk.jshell.execution.Util;
+
 import javax.naming.spi.InitialContextFactory;
 import java.util.*;
 
@@ -238,7 +240,45 @@ public class TGrafoDirigido implements IGrafoDirigido {
 
     @Override
     public boolean[][] warshall() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int n = vertices.size();
+        boolean[][] matrizCaminosWarshall = new boolean[n][n];
+
+        //Almacenamos las claves de los vértices para así acceder a la clave i y j
+        List<Comparable> etiquetasVertices = new ArrayList<>(vertices.keySet());
+
+        //FORMAMOS LA MATRIZ
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(i == j) { //El vértice de origen y el vértice de destino son los mismos, por ende el camino tiene costo 0.
+                    matrizCaminosWarshall[i][j] = true;
+                } else{
+                    //Obtenemos los costos de las aristas
+                    TVertice verticeOrigen = vertices.get(etiquetasVertices.get(i));
+                    TVertice verticeDestino = vertices.get(etiquetasVertices.get(j));
+                    Double costoArista = verticeOrigen.obtenerCostoAdyacencia(verticeDestino);
+                    //Existe una arista directa(existe un camino directo)
+                    if(costoArista != Double.MAX_VALUE) {
+                        matrizCaminosWarshall[i][j] = true;
+                    } else {
+                        //No existe un camino directo
+                        matrizCaminosWarshall[i][j] = false;
+                    }
+                }
+            }
+        }
+
+        //Algoritmo de Warshall
+
+        for(int k = 0; k < n; k++) {
+            for(int i = 0; i < n; i++) {
+                for(int j = 0; j < n; j++) {
+                    if(!matrizCaminosWarshall[i][j]) {
+                        matrizCaminosWarshall[i][j] = matrizCaminosWarshall[i][k] && matrizCaminosWarshall[k][j];
+                    }
+                }
+            }
+        }
+        return matrizCaminosWarshall;
     }
 
     @Override
@@ -246,5 +286,86 @@ public class TGrafoDirigido implements IGrafoDirigido {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public void bpf() {
+        //Al principio marcamos todos los vértices como no visitados
+        for(TVertice vertice : vertices.values()) {
+            vertice.setVisitado(false);
+        }
+        for(TVertice vertice : vertices.values()) {
+            if(!vertice.getVisitado()) {
+                bpfAuxiliar(vertice);
+            }
+        }
+    }
+    public void bpfConVerticeInicial(TVertice verticeInicial) {
+        //Al principio marcamos todos los vértices como no visitados
+        for(TVertice vertice : vertices.values()) {
+            vertice.setVisitado(false);
+        }
+        bpfAuxiliar(verticeInicial);
+
+        for(TVertice vertice : vertices.values()) {
+                if(!vertice.getVisitado()) {
+                bpfAuxiliar(vertice);
+            }
+        }
+    }
+
+    private void bpfAuxiliar(TVertice vertice) {
+        //Visitamos el vértice inicial
+        vertice.setVisitado(true);
+
+        for(Object objadyacencia : vertice.getAdyacentes()) {
+            if(objadyacencia instanceof TAdyacencia) {
+                TAdyacencia adyacencia = (TAdyacencia) objadyacencia;
+                TVertice adyacente = adyacencia.getDestino();
+
+                if(!adyacencia.getDestino().getVisitado()) {
+                    bpfAuxiliar(adyacente);
+                }
+            }
+        }
+    }
+
+    public void todosLosCaminos(TVertice origen, TVertice destino) {
+        /*
+            Primero iteraría sobre los adyacentes de ese vértice origen, en un bucle que vaya iterando sobre cada vértice su adyacente, guardando en una lista
+            las etiquetas de los vértices para así formar el camino, el bucle finalizaría cuándo la etiqueta de uno de los vértices sea igual al vértice de destino
+            indicando que se ha completado el camino.
+
+            finalmente devolvería la lista con todos los posibles vértices desde el vértice de origen hasta el vértice de destino.
+         */
+
+        //Caminos es una lista de caminos, cada camino es representado por otra lista que contiene todas las etiquetas de ese camino.
+        ArrayList<ArrayList<Comparable>> caminos = new ArrayList<>();
+        ArrayList<Comparable> caminoActual = new ArrayList<>();
+
+        bpfAuxiliarHastaDestino(origen,destino, caminoActual, caminos);
+
+        for(ArrayList<Comparable> camino : caminos)  {
+            System.out.println(camino);
+        }
+    }
+    private void bpfAuxiliarHastaDestino(TVertice origen,TVertice destino,ArrayList<Comparable> caminoActual, ArrayList<ArrayList<Comparable>> caminos) {
+        //Visitamos el vértice inicial
+        origen.setVisitado(true);
+
+        caminoActual.add(origen.getEtiqueta());
+
+        if(origen.getEtiqueta().equals(destino.getEtiqueta())) {
+            caminos.add(new ArrayList<>(caminoActual));
+        } else {
+            for(Object objadyacencia : origen.getAdyacentes()) {
+                if(objadyacencia instanceof TAdyacencia) {
+                    TAdyacencia adyacencia = (TAdyacencia) objadyacencia;
+                    TVertice adyacente = adyacencia.getDestino();
+                    if(!adyacencia.getDestino().getVisitado()) {
+                        bpfAuxiliarHastaDestino(adyacente,destino, caminoActual, caminos);
+                    }
+                }
+            }
+        }
+
+    }
 
 }

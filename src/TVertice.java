@@ -104,4 +104,17 @@ public class TVertice<T> implements IVertice {
         return datos;
     }
 
+    public void bpf() {
+        //Visitamos el vértice de origen
+        this.setVisitado(true);
+        for(TAdyacencia w : this.getAdyacentes()) {
+            TVertice adyacente = w.getDestino();
+
+            if(!adyacente.getVisitado()) {
+                //Mostramos en consola la etiqueta del vértice antes de visitarlo.
+                System.out.println(adyacente.getEtiqueta());
+                adyacente.bpf();
+            }
+        }
+    }
 }
