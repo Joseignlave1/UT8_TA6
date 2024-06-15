@@ -46,8 +46,7 @@ public class PruebaGrafo {
         //gd.bpf();
         TCaminos todosLosCaminos = gd.todosLosCaminos("Montevideo","Rio_de_Janeiro");
 
-        todosLosCaminos.imprimirCaminos();
-        todosLosCaminos.imprimirCaminosConsola();
+        todosLosCaminos.imprimirCaminosConsolaYCostoTotal();
 
 
         /*

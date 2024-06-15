@@ -25,9 +25,20 @@ public class TCaminos {
         }
         return sb.toString();
     }
+    public String imprimirCaminosConCostoTotal(){
+        StringBuilder sb = new StringBuilder();
+        for (TCamino camino : caminos){
+            sb.append( "Costo total " + camino.getCostoTotal() +  " " + camino.imprimirEtiquetas()+"\n" );
+
+        }
+        return sb.toString();
+    }
 
     public void imprimirCaminosConsola(){
         System.out.println(imprimirCaminos());
+    }
+    public void imprimirCaminosConsolaYCostoTotal(){
+        System.out.println(imprimirCaminosConCostoTotal());
     }
 
     public Collection<TCamino> getCaminos() {
