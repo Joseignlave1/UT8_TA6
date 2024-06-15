@@ -73,7 +73,7 @@ public class TGrafoDirigido implements IGrafoDirigido {
      * @param unaEtiqueta Etiqueta del vertice a buscar.-
      * @return El vertice encontrado. En caso de no existir, retorna nulo.
      */
-    private TVertice buscarVertice(Comparable unaEtiqueta) {
+    public TVertice buscarVertice(Comparable unaEtiqueta) {
         return getVertices().get(unaEtiqueta);
     }
 
@@ -327,24 +327,15 @@ public class TGrafoDirigido implements IGrafoDirigido {
         }
     }
 
-    public void todosLosCaminos(TVertice origen, TVertice destino) {
-        /*
-            Primero iteraría sobre los adyacentes de ese vértice origen, en un bucle que vaya iterando sobre cada vértice su adyacente, guardando en una lista
-            las etiquetas de los vértices para así formar el camino, el bucle finalizaría cuándo la etiqueta de uno de los vértices sea igual al vértice de destino
-            indicando que se ha completado el camino.
-
-            finalmente devolvería la lista con todos los posibles vértices desde el vértice de origen hasta el vértice de destino.
-         */
-
-        //Caminos es una lista de caminos, cada camino es representado por otra lista que contiene todas las etiquetas de ese camino.
-        ArrayList<ArrayList<Comparable>> caminos = new ArrayList<>();
-        ArrayList<Comparable> caminoActual = new ArrayList<>();
-
-        bpfAuxiliarHastaDestino(origen,destino, caminoActual, caminos);
-
-        for(ArrayList<Comparable> camino : caminos)  {
-            System.out.println(camino);
+    public TCaminos todosLosCaminos(Comparable etiquetaOrigen, Comparable etiquetaDestino) {
+        TCaminos todosLosCaminos = new TCaminos();
+        TVertice v = buscarVertice(etiquetaOrigen);
+        if(v != null){
+            TCamino caminoPrevio = new TCamino(v);
+            v.todosLosCaminos(etiquetaDestino, caminoPrevio, todosLosCaminos);
+            return todosLosCaminos;
         }
+        return null;
     }
     private void bpfAuxiliarHastaDestino(TVertice origen,TVertice destino,ArrayList<Comparable> caminoActual, ArrayList<ArrayList<Comparable>> caminos) {
         //Visitamos el vértice inicial

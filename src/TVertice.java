@@ -117,4 +117,27 @@ public class TVertice<T> implements IVertice {
             }
         }
     }
+    public TCaminos todosLosCaminos(Comparable etVertDest, TCamino caminoPrevio, TCaminos todosLosCaminos) {
+        this.setVisitado(true);
+
+        for (TAdyacencia adyacencia : this.getAdyacentes()) {
+            TVertice destino = adyacencia.getDestino();
+
+            if (!destino.getVisitado()) {
+
+                if (destino.getEtiqueta().compareTo(etVertDest) == 0) {
+                    TCamino copia = caminoPrevio.copiar();
+                    copia.agregarAdyacencia(adyacencia);
+                    todosLosCaminos.getCaminos().add(copia); // Agregar el camino encontrado a todosLosCaminos
+                } else {
+                    TCamino copia = caminoPrevio.copiar();
+                    copia.agregarAdyacencia(adyacencia);
+                    destino.todosLosCaminos(etVertDest, copia, todosLosCaminos); // Llamar recursivamente para el siguiente vértice
+                }
+            }
+        }
+
+        this.setVisitado(false);
+        return todosLosCaminos;
+    }
 }
