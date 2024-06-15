@@ -44,9 +44,12 @@ public class PruebaGrafo {
 //        UtilGrafos.imprimirMatrizWarshall(mWarshall, gd.getVertices(), "Matriz luego de Warshall");
 
         //gd.bpf();
-        TCaminos todosLosCaminos = gd.todosLosCaminos("Montevideo","Rio_de_Janeiro");
+        /*
+             TCaminos todosLosCaminos = gd.todosLosCaminos("Montevideo","Rio_de_Janeiro");
 
-        todosLosCaminos.imprimirCaminosConsolaYCostoTotal();
+             todosLosCaminos.imprimirCaminosConsolaYCostoTotal();
+         */
+
 
 
         /*
@@ -180,5 +183,43 @@ public class PruebaGrafo {
          */
 
 
+        //Kruskal
+
+        // Crear vértices
+        ArrayList<TVertice> vertices = new ArrayList<>();
+        vertices.add(new TVertice("Artigas"));
+        vertices.add(new TVertice("Canelones"));
+        vertices.add(new TVertice("Durazno"));
+        vertices.add(new TVertice("Florida"));
+        vertices.add(new TVertice("Montevideo"));
+        vertices.add(new TVertice("Punta del Este"));
+        vertices.add(new TVertice("Rocha"));
+
+        // Crear aristas
+        ArrayList<TArista> aristas = new ArrayList<>();
+        aristas.add(new TArista("Artigas", "Rocha", 400));
+        aristas.add(new TArista("Canelones", "Artigas", 500));
+        aristas.add(new TArista("Canelones", "Colonia", 200));
+        aristas.add(new TArista("Canelones", "Durazno", 170));
+        aristas.add(new TArista("Canelones", "Punta del Este", 90));
+        aristas.add(new TArista("Colonia", "Montevideo", 180));
+        aristas.add(new TArista("Montevideo", "Artigas", 700));
+        aristas.add(new TArista("Montevideo", "Canelones", 30));
+        aristas.add(new TArista("Montevideo", "Punta del Este", 130));
+        aristas.add(new TArista("Punta del Este", "Rocha", 90));
+        aristas.add(new TArista("Rocha", "Montevideo", 270));
+        aristas.add(new TArista("Florida", "Durazno", 60));
+
+        // Crear el grafo no dirigido
+        TGrafoNoDirigido grafoNoDirigido = new TGrafoNoDirigido(vertices, aristas);
+
+        // Ejecutar el algoritmo de Kruskal
+        TGrafoNoDirigido arbolExpansionMinima = grafoNoDirigido.Kruskal();
+
+        // Imprimir las aristas del árbol de expansión mínima
+        System.out.println("Aristas del Árbol de Expansión Mínima:");
+        for (TArista arista : arbolExpansionMinima.getLasAristas()) {
+            System.out.println(arista.getEtiquetaOrigen() + " - " + arista.getEtiquetaDestino() + " : " + arista.getCosto());
+        }
     }
 }
