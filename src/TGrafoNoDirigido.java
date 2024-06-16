@@ -145,15 +145,92 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
         }
         return verticesVisitados;
     }
+
+
+     //PUNTOS DE ARTICULACIÓN:
+      /*
+            ASIGNACIÓN DE BAJO:
+             primero procesas los nodos agregandoles un numero BP´, después los recorres en post orden, y te fijas, pueden haber 3 posibilidades:
+              1: que el nodo el cuál estés parado, no tenga hijos y no tenga arista de retroceso, en ese caso su bajo es su número bp,
+              2: que el nodo el cuál estés parado tenga arista de retroceso, en ese caso su bajo es el bajo de la arista de retroceso,
+              3- si el nodo tiene hijos y no arista de retroceso, comparas el numero bp tuyo con el bajo de tu hijo, agarras el menor y ese va a ser tu bajo
+
+            ENCONTRAR UN PUNTO DE ARTICULACIÓN:
+            La raiz es un punto de articulación SI Y SOLO SÍ, tiene DOS o MÁS HIJOS
+
+            Un vértice V distinto de la raíz es un punto de articulación SI Y SOLO SÍ, TIENE UN HIJO W el cuál
+            BAJO DE W ES MAYOR O IGUAL AL NUMERO BP DE V
+         */
+
 	 
 	@Override
 	public LinkedList<TVertice> puntosArticulacion(Comparable etOrigen) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        desvisitarVertices();
+        LinkedList<TVertice> puntosDeArticulacion = new LinkedList<>();
+        int[] cont = new int[1];
+
+        // Obtener el vértice origen
+
+        TVertice verticeOrigen = getVertices().get(etOrigen);
+        if (verticeOrigen != null && !verticeOrigen.getVisitado()) {
+            verticeOrigen.puntoDeArticulacion(puntosDeArticulacion, cont);
+        }
+
+        // ME ASEGURO DE QUE EL MÉTODO NO DEVUELVA PUNTOS DE ARTICULACIÓN REPETIDOS
+        LinkedList<TVertice> puntosDeArticulacionSinRepetir = new LinkedList<>();
+        for (TVertice vertice : puntosDeArticulacion) {
+            if (!puntosDeArticulacionSinRepetir.contains(vertice)) {
+                puntosDeArticulacionSinRepetir.add(vertice);
+            }
+        }
+
+        return puntosDeArticulacionSinRepetir;
+    }
+    public LinkedList<TVertice> puntosArticulacion() {
+
+
+        desvisitarVertices();
+        LinkedList<TVertice> puntosDeArticulacion = new LinkedList<>();
+        int[] cont = new int[1];
+
+        for(TVertice vertice : getVertices().values()) {
+            if(!vertice.getVisitado()) {
+                vertice.puntoDeArticulacion(puntosDeArticulacion,cont);
+            }
+        }
+
+        //ME ASEGURO DE QUE EL MÉTODO NO DEVUELVA PUNTOS DE ARTICULACIÓN REPETIDOS
+        LinkedList<TVertice> puntosDeArticulacionSinRepetir = new LinkedList<>();
+
+        for(TVertice vertice : puntosDeArticulacion) {
+            if(!puntosDeArticulacionSinRepetir.contains(vertice)) {
+                puntosDeArticulacionSinRepetir.add(vertice);
+            }
+        }
+        return puntosDeArticulacionSinRepetir;
     }
     
 	@Override
     public boolean esConexo(){
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(getVertices().isEmpty()) { //Si el grafo no tiene vértices, se considera conexo
+            return true;
+        }
+        desvisitarVertices();
+
+        TVertice verticeInicial = getVertices().values().iterator().next();
+
+        //Realizamos bea desde el vértice inicial
+        Collection<TVertice> verticesVisitadosEnBea = verticeInicial.bea();
+
+        //Si después de hacer bea algún vertice no fue visitado, entonces el grafo no es conexo.
+
+        for(TVertice vertice : getVertices().values()) {
+            if(!vertice.getVisitado()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -166,4 +243,5 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
             return -1;
         }
     }
+
 }

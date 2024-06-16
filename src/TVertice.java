@@ -202,4 +202,41 @@ public class TVertice<T> implements IVertice,IVerticeKevinBacon {
         }
         return visitados;
     }
+
+    //LÓGICA DEL ALGORITMO DE TARJAN PARA ENCONTRAR LOS PUNTOS DE ARTICULACIÓN:
+
+    public int numBajo;
+    public int numBp;
+    public void puntoDeArticulacion(LinkedList<TVertice> puntosdeArticulacion, int[] contador) {
+        this.setVisitado(true);
+        contador[0]++;
+        this.numBp = contador[0];
+        this.numBajo = contador[0];
+        int numeroHijos = 0;
+
+        LinkedList<TVertice> hijos = new LinkedList<>();
+
+        for(TAdyacencia adyacencia : this.getAdyacentes()) {
+            TVertice adyacente = adyacencia.getDestino();
+
+            if(!adyacente.getVisitado()) {
+                numeroHijos++;
+                adyacente.puntoDeArticulacion(puntosdeArticulacion,contador);
+                hijos.add(adyacente);
+
+                this.numBajo = Math.min(this.numBajo, adyacente.numBajo);
+
+                //ENCONTRAMOS UN VÉRTICE DISTINTO DE LA RAÍZ QUE ES PUNTO DE ARTICULACIÓN
+                if(this.numBp <= adyacente.numBajo) {
+                    puntosdeArticulacion.add(this);
+                }
+            } else {
+                this.numBajo = Math.min(this.numBajo, adyacente.numBajo);
+            }
+            //CASO EN EL QUE AL RAÍZ ES UN PUNTO DE ARTICULACIÓN
+            if(numeroHijos >= 2 && this.numBp == 1) {
+                puntosdeArticulacion.add(this);
+            }
+        }
+    }
 }
