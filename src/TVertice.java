@@ -1,8 +1,9 @@
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Queue;
 
-public class TVertice<T> implements IVertice {
+public class TVertice<T> implements IVertice,IVerticeKevinBacon {
 
     private final Comparable etiqueta;
     private LinkedList<TAdyacencia> adyacentes;
@@ -139,5 +140,45 @@ public class TVertice<T> implements IVertice {
 
         this.setVisitado(false);
         return todosLosCaminos;
+    }
+
+    //KEVIN BACON
+
+    private int numBacon;
+
+    @Override
+    public int getBacon() {
+        return numBacon;
+    }
+
+    @Override
+    public void setBacon(int newBacon) {
+        numBacon = newBacon;
+    }
+
+    //Cálculo del número BACON
+    //Realizamos búsqueda en amplitud
+    public int numBacon(String actorDestino) {
+        Queue<TVertice> colaActores = new LinkedList<>();
+        //Empezamos siempre por kevin bacon
+        this.setVisitado(true);
+        colaActores.offer(this);
+        setBacon(0);
+        while(!colaActores.isEmpty()) {
+            TVertice x = colaActores.remove();
+            LinkedList<TAdyacencia> adyacentes = x.getAdyacentes();
+            for(TAdyacencia y : adyacentes) {
+                TVertice verticeAdyacente = y.getDestino();
+                if(!verticeAdyacente.getVisitado()) {
+                    verticeAdyacente.setVisitado(true);
+                    verticeAdyacente.setBacon(x.getBacon() + 1);
+                    if(verticeAdyacente.getEtiqueta().equals(actorDestino)) {
+                        return verticeAdyacente.getBacon();
+                    }
+                    colaActores.offer(verticeAdyacente);
+                }
+            }
+        }
+        return -1; //Si no se pudo llegar al destino, devolvemos -1
     }
 }

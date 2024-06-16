@@ -2,7 +2,7 @@
 import java.lang.reflect.Array;
 import java.util.*;
 
-public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido {
+public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido,IGrafoKevinBacon {
 
     protected TAristas lasAristas = new TAristas();
 
@@ -137,5 +137,16 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
 	@Override
     public boolean esConexo(){
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int numBacon(Comparable actor) {
+        desvisitarVertices();
+        TVertice kevinBacon = getVertices().get("Kevin_Bacon");
+        if(kevinBacon != null) {
+            return kevinBacon.numBacon(actor.toString());
+        } else {
+            return -1;
+        }
     }
 }

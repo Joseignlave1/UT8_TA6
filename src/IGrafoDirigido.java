@@ -89,5 +89,11 @@ public interface IGrafoDirigido {
      */
     boolean[][] warshall();
     
-    public Map<Comparable, TVertice> getVertices(); 
+    public Map<Comparable, TVertice> getVertices();
+
+    /**
+     *Desvisitar los vértices
+     */
+
+    public void desvisitarVertices();
 }

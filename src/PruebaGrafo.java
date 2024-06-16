@@ -183,9 +183,9 @@ public class PruebaGrafo {
          */
 
 
-        //Kruskal
+        /*
+                    //Kruskal
 
-        // Crear vértices
         ArrayList<TVertice> vertices = new ArrayList<>();
         vertices.add(new TVertice("Artigas"));
         vertices.add(new TVertice("Canelones"));
@@ -195,7 +195,6 @@ public class PruebaGrafo {
         vertices.add(new TVertice("Punta del Este"));
         vertices.add(new TVertice("Rocha"));
 
-        // Crear aristas
         ArrayList<TArista> aristas = new ArrayList<>();
         aristas.add(new TArista("Artigas", "Rocha", 400));
         aristas.add(new TArista("Canelones", "Artigas", 500));
@@ -210,16 +209,29 @@ public class PruebaGrafo {
         aristas.add(new TArista("Rocha", "Montevideo", 270));
         aristas.add(new TArista("Florida", "Durazno", 60));
 
-        // Crear el grafo no dirigido
         TGrafoNoDirigido grafoNoDirigido = new TGrafoNoDirigido(vertices, aristas);
 
-        // Ejecutar el algoritmo de Kruskal
         TGrafoNoDirigido arbolExpansionMinima = grafoNoDirigido.Kruskal();
 
-        // Imprimir las aristas del árbol de expansión mínima
         System.out.println("Aristas del Árbol de Expansión Mínima:");
         for (TArista arista : arbolExpansionMinima.getLasAristas()) {
             System.out.println(arista.getEtiquetaOrigen() + " - " + arista.getEtiquetaDestino() + " : " + arista.getCosto());
+        }
+         */
+
+        //KEVIN BACON
+
+        TGrafoNoDirigido grafoNoDirigido = (TGrafoNoDirigido) UtilGrafos.cargarGrafo("./src/actores.csv", "./src/en_pelicula.csv",
+                false, TGrafoNoDirigido.class);
+
+
+        // Actores a los que queremos calcular su número de Bacon
+        String[] actores = {"John_Goodman", "Tom_Cruise", "Jason_Statham", "Lukas_Haas", "Djimon_Hounsou", "Harrison_Ford"};
+
+        // Calcular y mostrar el número de Bacon para cada actor
+        for (String actor : actores) {
+            int numBacon = grafoNoDirigido.numBacon(actor);
+            System.out.println("El número de Bacon de " + actor + " es: " + numBacon);
         }
     }
 }

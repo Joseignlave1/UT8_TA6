@@ -141,6 +141,13 @@ public class TGrafoDirigido implements IGrafoDirigido {
     }
 
     @Override
+    public void desvisitarVertices() {
+        for(TVertice vertice : vertices.values()) {
+            vertice.setVisitado(false);
+        }
+    }
+
+    @Override
     public Comparable centroDelGrafo() {
         /*
         Para obtener el centro de un grafo hacer:
