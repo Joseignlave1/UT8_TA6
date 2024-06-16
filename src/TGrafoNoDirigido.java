@@ -119,14 +119,31 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
         }
     }
 
+
+
+    //HACE BEA A TODOS LOS VÉRTICES, LOS VISITA EN EL ORDEN EN QUE LOS ENCUENTRA
     @Override
     public Collection<TVertice> bea() {
-        return List.of();
+        desvisitarVertices();
+        Collection<TVertice> verticesVisitados = new LinkedList<>();
+        for(TVertice vertice : getVertices().values()) {
+            if(!vertice.getVisitado()) {
+                verticesVisitados.addAll(vertice.bea());
+            }
+        }
+        return verticesVisitados;
     }
 
+    //HACE BEA DESDE UN VÉRTICE ESPECÍFICO, VISITA EL PROPIO VÉRTICE, SUS ADYACENTES Y SUS DESCENDIENTES.
     @Override
     public Collection<TVertice> bea(Comparable etiquetaOrigen) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Collection<TVertice> verticesVisitados = new LinkedList<>();
+        desvisitarVertices();
+        TVertice verticeOrigen = getVertices().get(etiquetaOrigen);
+        if(verticeOrigen != null) {
+            verticesVisitados.addAll(verticeOrigen.bea());
+        }
+        return verticesVisitados;
     }
 	 
 	@Override

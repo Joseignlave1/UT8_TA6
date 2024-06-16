@@ -6,11 +6,12 @@ import java.util.*;
 
 public class TGrafoDirigido implements IGrafoDirigido {
 
-    private Map<Comparable, TVertice> vertices; // vertices del grafo.-
-
+    private final Map<Comparable, TVertice> vertices; // vertices del grafo.-
+    private final LinkedList<TArista> aristas; //Aristas del grafo
     private static final double INFINITO = Double.POSITIVE_INFINITY;
     public TGrafoDirigido(Collection<TVertice> vertices, Collection<TArista> aristas) {
         this.vertices = new HashMap<>();
+        this.aristas = new LinkedList<>();
         for (TVertice vertice : vertices) {
             insertarVertice(vertice.getEtiqueta());
         }
@@ -51,6 +52,14 @@ public class TGrafoDirigido implements IGrafoDirigido {
         return false;
     }
 
+    @Override
+    public boolean eliminarVertice(Comparable nombreVertice) {
+        if(nombreVertice != null) {
+            getVertices().remove(nombreVertice);
+            return getVertices().containsKey(nombreVertice);
+        }
+        return false;
+    }
     /**
      * Metodo encargado de verificar la existencia de un vertice dentro del
      * grafo.-
@@ -138,6 +147,12 @@ public class TGrafoDirigido implements IGrafoDirigido {
      */
     public Map<Comparable, TVertice> getVertices() {
         return vertices;
+    }
+    /**
+     * @return the aristas
+     */
+    public LinkedList<TArista> getAristas() {
+        return aristas;
     }
 
     @Override
@@ -288,10 +303,6 @@ public class TGrafoDirigido implements IGrafoDirigido {
         return matrizCaminosWarshall;
     }
 
-    @Override
-    public boolean eliminarVertice(Comparable nombreVertice) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     public void bpf() {
         //Al principio marcamos todos los vértices como no visitados

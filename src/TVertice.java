@@ -181,4 +181,25 @@ public class TVertice<T> implements IVertice,IVerticeKevinBacon {
         }
         return -1; //Si no se pudo llegar al destino, devolvemos -1
     }
+
+    public Collection<TVertice> bea() {
+        Queue<TVertice> colaVertices = new LinkedList<>();
+        Collection<TVertice> visitados = new LinkedList<>();
+        this.setVisitado(true);
+        colaVertices.offer(this);
+        visitados.add(this);
+        while(!colaVertices.isEmpty()) {
+            TVertice x = colaVertices.remove();
+            LinkedList<TAdyacencia> adyacentes = x.getAdyacentes();
+            for(TAdyacencia y : adyacentes) {
+                TVertice verticeAdyacente = y.getDestino();
+                if(!verticeAdyacente.getVisitado()) {
+                    verticeAdyacente.setVisitado(true);
+                    colaVertices.offer(verticeAdyacente);
+                    visitados.add(verticeAdyacente);
+                }
+            }
+        }
+        return visitados;
+    }
 }
