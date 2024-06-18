@@ -23,10 +23,10 @@ public class PruebaGrafo {
          */
 
         //Ejercicio 1
-        TGrafoDirigido gd = (TGrafoDirigido) UtilGrafos.cargarGrafo("./src/aeropuertos.txt", "./src/conexiones.txt",
-                false, TGrafoDirigido.class);
-
-        Object[] etiquetasarray = gd.getEtiquetasOrdenado();
+//        TGrafoDirigido gd = (TGrafoDirigido) UtilGrafos.cargarGrafo("./src/aeropuertos.txt", "./src/conexiones.txt",
+//                false, TGrafoDirigido.class);
+//
+//        Object[] etiquetasarray = gd.getEtiquetasOrdenado();
 
 //        Double[][] matriz = UtilGrafos.obtenerMatrizCostos(gd.getVertices());
 //        UtilGrafos.imprimirMatrizMejorado(matriz, gd.getVertices(), "Matriz");
@@ -288,6 +288,8 @@ public class PruebaGrafo {
 //            System.out.println(vertice.getEtiqueta());
 //        }
 
+
+        //CLASIFICAR ÁRCOS DEL ÁRBOL
         TVertice vA = new TVertice("A");
         TVertice vB = new TVertice("B");
         TVertice vC = new TVertice("C");
@@ -304,16 +306,44 @@ public class PruebaGrafo {
         Collection<TArista> aristas = Arrays.asList(aristaAB, aristaAC, aristaBD, aristaCD, aristaDE);
 
         TGrafoDirigido grafoDirigido = new TGrafoDirigido(vertices, aristas);
-        List<List<TVertice>> componentesFuertementeConexos = grafoDirigido.encontrarComponentesFuertementeConectados();
 
-        System.out.println("Componentes fuertemente conexos del grafo");
 
-        for(List<TVertice> componente : componentesFuertementeConexos) {
-            for(TVertice vertice : componente) {
-                System.out.println(vertice.getEtiqueta() + "");
-            }
-            System.out.println();
+        List<TArista> arcosArbol = new LinkedList<>();
+        List<TArista> arcosRetroceso = new LinkedList<>();
+        List<TArista> arcosAvance = new LinkedList<>();
+        List<TArista> arcosCruzados = new LinkedList<>();
+
+        grafoDirigido.clasificarArcos("A", arcosArbol, arcosRetroceso, arcosAvance, arcosCruzados);
+
+        System.out.println("Arcos de Árbol:");
+        for (TArista arista : arcosArbol) {
+            System.out.println(arista.getEtiquetaOrigen() + " -> " + arista.getEtiquetaDestino());
         }
+
+        System.out.println("Arcos de Retroceso:");
+        for (TArista arista : arcosRetroceso) {
+            System.out.println(arista.getEtiquetaOrigen() + " -> " + arista.getEtiquetaDestino());
+        }
+
+        System.out.println("Arcos de Avance:");
+        for (TArista arista : arcosAvance) {
+            System.out.println(arista.getEtiquetaOrigen() + " -> " + arista.getEtiquetaDestino());
+        }
+
+        System.out.println("Arcos Cruzados:");
+        for (TArista arista : arcosCruzados) {
+            System.out.println(arista.getEtiquetaOrigen() + " -> " + arista.getEtiquetaDestino());
+        }
+//        List<List<TVertice>> componentesFuertementeConexos = grafoDirigido.encontrarComponentesFuertementeConectados();
+//
+//        System.out.println("Componentes fuertemente conexos del grafo");
+//
+//        for(List<TVertice> componente : componentesFuertementeConexos) {
+//            for(TVertice vertice : componente) {
+//                System.out.println(vertice.getEtiqueta() + "");
+//            }
+//            System.out.println();
+//        }
 //
 //        List<TVertice> ordenTopologico = grafoDirigido.ordenarTopologico();
 //

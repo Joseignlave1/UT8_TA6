@@ -493,4 +493,50 @@ public class TGrafoDirigido implements IGrafoDirigido {
             componentes.add(componente);
         }
     }
+
+    //Clasificar arcos:
+
+    public void clasificarArcos(Comparable origen, List<TArista> arcosArbol, List<TArista> arcosRetroceso, List<TArista> arcosAvance, List<TArista> arcosCruzados) {
+        TVertice vertOrigen = buscarVertice(origen);
+        if (vertOrigen == null) {
+            return;
+        }
+        desvisitarVertices();
+        asignaNumBpf(origen);
+        desvisitarVertices();
+        cantDescendientes(origen);
+        desvisitarVertices();
+        vertOrigen.clasificarArcos(arcosArbol, arcosRetroceso, arcosAvance, arcosCruzados);
+        for (TVertice vertice : this.vertices.values()) {
+            if (!vertice.getVisitado()) {
+                vertice.clasificarArcos(arcosArbol, arcosRetroceso, arcosAvance, arcosCruzados);
+            }
+        }
+    }
+
+    public void asignaNumBpf(Comparable origen) {
+        TVertice v = buscarVertice(origen);
+        if (v == null) {
+            return;
+        }
+        int num = v.asignaNumBpf(1);
+        for (TVertice vertice : this.vertices.values()) {
+            if (!vertice.getVisitado()) {
+                num = vertice.asignaNumBpf(num);
+            }
+        }
+    }
+
+    public void cantDescendientes(Comparable origen) {
+        TVertice v = buscarVertice(origen);
+        if (v == null) {
+            return;
+        }
+        v.cantDescendientes();
+        for (TVertice vertice : this.vertices.values()) {
+            if (!vertice.getVisitado()) {
+                vertice.cantDescendientes();
+            }
+        }
+    }
 }

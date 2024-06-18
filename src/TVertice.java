@@ -1,8 +1,5 @@
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class TVertice<T> implements IVertice,IVerticeKevinBacon {
 
@@ -254,5 +251,50 @@ public class TVertice<T> implements IVertice,IVerticeKevinBacon {
         pila.push(v);
     }
 
+    //Clasificar arcos
 
+
+    private int numBpf;
+    private int numDescendientes;
+    public void clasificarArcos(List<TArista> arcosArbol, List<TArista> arcosRetroceso, List<TArista> arcosAvance, List<TArista> arcosCruzados) {
+        this.setVisitado(true);
+        for (TAdyacencia adyacencia : this.getAdyacentes()) {
+            TVertice destino = adyacencia.getDestino();
+            if (!destino.getVisitado()) {
+                arcosArbol.add(new TArista(this.getEtiqueta(), destino.getEtiqueta(), adyacencia.getCosto()));
+                destino.clasificarArcos(arcosArbol, arcosRetroceso, arcosAvance, arcosCruzados);
+            } else if (this.numBpf > destino.numBpf) {
+                arcosRetroceso.add(new TArista(this.getEtiqueta(), destino.getEtiqueta(), adyacencia.getCosto()));
+            } else if (this.numBpf < destino.numBpf && destino.numDescendientes > 0) {
+                arcosAvance.add(new TArista(this.getEtiqueta(), destino.getEtiqueta(), adyacencia.getCosto()));
+            } else {
+                arcosCruzados.add(new TArista(this.getEtiqueta(), destino.getEtiqueta(), adyacencia.getCosto()));
+            }
+        }
+    }
+
+    public int asignaNumBpf(int num) {
+        this.numBpf = num++;
+        this.setVisitado(true);
+        for (TAdyacencia adyacencia : this.getAdyacentes()) {
+            TVertice destino = adyacencia.getDestino();
+            if (!destino.getVisitado()) {
+                num = destino.asignaNumBpf(num);
+            }
+        }
+        return num;
+    }
+
+    public int cantDescendientes() {
+        this.setVisitado(true);
+        int numDesc = 0;
+        for (TAdyacencia adyacencia : this.getAdyacentes()) {
+            TVertice destino = adyacencia.getDestino();
+            if (!destino.getVisitado()) {
+                numDesc += destino.cantDescendientes() + 1;
+            }
+        }
+        this.numDescendientes = numDesc;
+        return numDesc;
+    }
 }
