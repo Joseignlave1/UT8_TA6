@@ -2,6 +2,7 @@
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 public class TVertice<T> implements IVertice,IVerticeKevinBacon {
 
@@ -239,4 +240,19 @@ public class TVertice<T> implements IVertice,IVerticeKevinBacon {
             }
         }
     }
+
+    public void bpfParaOrdenTopologico(TVertice v , Collection<TVertice> visitado, Stack<TVertice> pila) {
+        v.setVisitado(true);
+        visitado.add(v);
+        LinkedList<TAdyacencia> adyacentes = v.getAdyacentes();
+        for(TAdyacencia w : adyacentes) {
+            TVertice adyacente = w.getDestino();
+            if(!adyacente.getVisitado()) {
+                bpfParaOrdenTopologico(adyacente,visitado, pila);
+            }
+        }
+        pila.push(v);
+    }
+
+
 }

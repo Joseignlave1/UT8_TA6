@@ -376,5 +376,121 @@ public class TGrafoDirigido implements IGrafoDirigido {
         }
 
     }
+    public List<TVertice> ordenarTopologico() {
+        Stack<TVertice> pila = new Stack<>();
+        Set<TVertice> visitado = new HashSet<>();
+        for(TVertice vertice : vertices.values()) {
+            if(!vertice.getVisitado()) {
+                vertice.bpfParaOrdenTopologico(vertice,visitado,pila);
+            }
+        }
 
+        List<TVertice> resultado = new ArrayList<>();
+        while(!pila.isEmpty()) {
+            resultado.add(pila.pop());
+        }
+        return resultado;
+    }
+
+
+    public boolean esFuertementeConexo() {
+        if (getVertices().isEmpty()) { // Si el grafo no tiene vértices, se considera fuertemente conexo
+            return true;
+        }
+
+        desvisitarVertices();
+        TVertice verticeInicial = getVertices().values().iterator().next();
+
+        // Realizamos BEA desde el vértice inicial
+        Collection<TVertice> verticesVisitadosEnBea = verticeInicial.bea();
+
+        for (TVertice vertice : getVertices().values()) {
+            if (!vertice.getVisitado()) {
+                return false; // Si algún vértice no fue visitado, el grafo no es fuertemente conexo
+            }
+        }
+
+        TGrafoDirigido grafoTranspuesto = obtenerGrafoTranspuesto();
+
+        grafoTranspuesto.desvisitarVertices();
+
+        // Realizamos BEA desde el vértice correspondiente en el grafo transpuesto
+        TVertice verticeInicialTranspuesto = grafoTranspuesto.getVertices().get(verticeInicial.getEtiqueta());
+        Collection<TVertice> verticesVisitadosEnBeaTranspuesto = verticeInicialTranspuesto.bea();
+
+        for (TVertice vertice : grafoTranspuesto.getVertices().values()) {
+            if (!vertice.getVisitado()) {
+                return false; // Si algún vértice no fue visitado en el grafo transpuesto, el grafo no es fuertemente conexo
+            }
+        }
+
+        return true; // Si todos los vértices fueron visitados en ambas BEA, el grafo es fuertemente conexo
+    }
+
+    // Método auxiliar para obtener el grafo transpuesto
+    private TGrafoDirigido obtenerGrafoTranspuesto() {
+        Collection<TVertice> verticesTranspuestos = new ArrayList<>();
+        for (TVertice vertice : getVertices().values()) {
+            verticesTranspuestos.add(new TVertice(vertice.getEtiqueta()));
+        }
+
+        Collection<TArista> aristasTranspuestas = new ArrayList<>();
+        for (TVertice vertice : getVertices().values()) {
+            LinkedList<TAdyacencia> adyacentes = vertice.getAdyacentes();
+            for (TAdyacencia adyacencia : adyacentes) {
+                aristasTranspuestas.add(new TArista(adyacencia.getDestino().getEtiqueta(), vertice.getEtiqueta(), adyacencia.getCosto()));
+            }
+        }
+
+        return new TGrafoDirigido(verticesTranspuestos, aristasTranspuestas);
+    }
+
+
+    //Algoritmo de tarjan para encontrar los componentes fuertemente conexos en un grafo dirigido.
+    public List<List<TVertice>> encontrarComponentesFuertementeConectados() {
+        List<List<TVertice>> componentes = new ArrayList<>();
+        Map<TVertice, Integer> indices = new HashMap<>();
+        Map<TVertice, Integer> bajos = new HashMap<>();
+        Deque<TVertice> pila = new ArrayDeque<>();
+        Set<TVertice> enPila = new HashSet<>();
+        int[] index = {0};
+
+        for (TVertice vertice : getVertices().values()) {
+            if (!indices.containsKey(vertice)) {
+                fuertementeConexo(vertice, index, indices, bajos, pila, enPila, componentes);
+            }
+        }
+        return componentes;
+    }
+
+    private void fuertementeConexo(TVertice v, int[] index, Map<TVertice, Integer> indices, Map<TVertice, Integer> bajos,
+                               Deque<TVertice> pila, Set<TVertice> enPila, List<List<TVertice>> componentes) {
+        indices.put(v, index[0]);
+        bajos.put(v, index[0]);
+        index[0]++;
+        pila.push(v);
+        enPila.add(v);
+
+        LinkedList<TAdyacencia> adyacentes = v.getAdyacentes();
+        for (TAdyacencia adyacencia : adyacentes) {
+            TVertice w = adyacencia.getDestino();
+            if (!indices.containsKey(w)) {
+                fuertementeConexo(w, index, indices, bajos, pila, enPila, componentes);
+                bajos.put(v, Math.min(bajos.get(v), bajos.get(w)));
+            } else if (enPila.contains(w)) {
+                bajos.put(v, Math.min(bajos.get(v), indices.get(w)));
+            }
+        }
+
+        if (bajos.get(v).equals(indices.get(v))) {
+            List<TVertice> componente = new ArrayList<>();
+            TVertice w;
+            do {
+                w = pila.pop();
+                enPila.remove(w);
+                componente.add(w);
+            } while (!w.equals(v));
+            componentes.add(componente);
+        }
+    }
 }

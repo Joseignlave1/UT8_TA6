@@ -254,37 +254,74 @@ public class PruebaGrafo {
 
         //PUNTOS DE ARTICULACIÓN
 
-        ArrayList<TVertice> vertices = new ArrayList<>();
-        vertices.add(new TVertice("Artigas"));
-        vertices.add(new TVertice("Canelones"));
-        vertices.add(new TVertice("Durazno"));
-        vertices.add(new TVertice("Florida"));
-        vertices.add(new TVertice("Montevideo"));
-        vertices.add(new TVertice("Punta del Este"));
-        vertices.add(new TVertice("Rocha"));
 
-        ArrayList<TArista> aristas = new ArrayList<>();
-        aristas.add(new TArista("Artigas", "Rocha", 400));
-        aristas.add(new TArista("Canelones", "Artigas", 500));
-        aristas.add(new TArista("Canelones", "Colonia", 200));
-        aristas.add(new TArista("Canelones", "Durazno", 170));
-        aristas.add(new TArista("Canelones", "Punta del Este", 90));
-        aristas.add(new TArista("Colonia", "Montevideo", 180));
-        aristas.add(new TArista("Montevideo", "Artigas", 700));
-        aristas.add(new TArista("Montevideo", "Canelones", 30));
-        aristas.add(new TArista("Montevideo", "Punta del Este", 130));
-        aristas.add(new TArista("Punta del Este", "Rocha", 90));
-        aristas.add(new TArista("Rocha", "Montevideo", 270));
-        aristas.add(new TArista("Florida", "Durazno", 60));
+//        ArrayList<TVertice> vertices = new ArrayList<>();
+//        vertices.add(new TVertice("Artigas"));
+//        vertices.add(new TVertice("Canelones"));
+//        vertices.add(new TVertice("Durazno"));
+//        vertices.add(new TVertice("Florida"));
+//        vertices.add(new TVertice("Montevideo"));
+//        vertices.add(new TVertice("Punta del Este"));
+//        vertices.add(new TVertice("Rocha"));
+//
+//        ArrayList<TArista> aristas = new ArrayList<>();
+//        aristas.add(new TArista("Artigas", "Rocha", 400));
+//        aristas.add(new TArista("Canelones", "Artigas", 500));
+//        aristas.add(new TArista("Canelones", "Colonia", 200));
+//        aristas.add(new TArista("Canelones", "Durazno", 170));
+//        aristas.add(new TArista("Canelones", "Punta del Este", 90));
+//        aristas.add(new TArista("Colonia", "Montevideo", 180));
+//        aristas.add(new TArista("Montevideo", "Artigas", 700));
+//        aristas.add(new TArista("Montevideo", "Canelones", 30));
+//        aristas.add(new TArista("Montevideo", "Punta del Este", 130));
+//        aristas.add(new TArista("Punta del Este", "Rocha", 90));
+//        aristas.add(new TArista("Rocha", "Montevideo", 270));
+//        aristas.add(new TArista("Florida", "Durazno", 60));
+//
+//        TGrafoNoDirigido grafoNoDirigido = new TGrafoNoDirigido(vertices, aristas);
+//
+//        LinkedList<TVertice> puntosArticulacion = grafoNoDirigido.puntosArticulacion();
+//
+//        // Imprimir los puntos de articulación
+//        System.out.println("Puntos de articulación en el grafo:");
+//        for (TVertice vertice : puntosArticulacion) {
+//            System.out.println(vertice.getEtiqueta());
+//        }
 
-        TGrafoNoDirigido grafoNoDirigido = new TGrafoNoDirigido(vertices, aristas);
+        TVertice vA = new TVertice("A");
+        TVertice vB = new TVertice("B");
+        TVertice vC = new TVertice("C");
+        TVertice vD = new TVertice("D");
+        TVertice vE = new TVertice("E");
 
-        LinkedList<TVertice> puntosArticulacion = grafoNoDirigido.puntosArticulacion();
+        TArista aristaAB = new TArista("A", "B", 1);
+        TArista aristaAC = new TArista("A", "C", 1);
+        TArista aristaBD = new TArista("B", "D", 1);
+        TArista aristaCD = new TArista("C", "D", 1);
+        TArista aristaDE = new TArista("D", "E", 1);
 
-        // Imprimir los puntos de articulación
-        System.out.println("Puntos de articulación en el grafo:");
-        for (TVertice vertice : puntosArticulacion) {
-            System.out.println(vertice.getEtiqueta());
+        Collection<TVertice> vertices = Arrays.asList(vA, vB, vC, vD, vE);
+        Collection<TArista> aristas = Arrays.asList(aristaAB, aristaAC, aristaBD, aristaCD, aristaDE);
+
+        TGrafoDirigido grafoDirigido = new TGrafoDirigido(vertices, aristas);
+        List<List<TVertice>> componentesFuertementeConexos = grafoDirigido.encontrarComponentesFuertementeConectados();
+
+        System.out.println("Componentes fuertemente conexos del grafo");
+
+        for(List<TVertice> componente : componentesFuertementeConexos) {
+            for(TVertice vertice : componente) {
+                System.out.println(vertice.getEtiqueta() + "");
+            }
+            System.out.println();
         }
+//
+//        List<TVertice> ordenTopologico = grafoDirigido.ordenarTopologico();
+//
+//        System.out.println("Orden topológico del grafo:");
+//        for (TVertice vertice : ordenTopologico) {
+//            System.out.print(vertice.getEtiqueta() + " ");
+//        }
+
+
     }
 }
