@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -42,7 +44,38 @@ public class TCaminos {
     }
 
     public Collection<TCamino> getCaminos() {
+
         return caminos;
     }
-        
+
+
+    //El camino crítico es el camino con mayor costo de toda la colección de caminos
+    public TCamino caminoCritico() {
+        Double maximoValor = 0.0;
+        TCamino resultado = null;
+        for(TCamino camino : caminos) {
+            if(camino.getCostoTotal() > maximoValor) {
+                maximoValor = camino.getCostoTotal();
+                resultado = camino;
+            }
+        }
+        return resultado;
+    }
+
+    //La holgura es
+    public String holgura() {
+        TCamino caminoCritico = caminoCritico();
+        StringBuilder sb = new StringBuilder();
+        for(TCamino camino : caminos) {
+            sb.append(camino.imprimirEtiquetas() + "\n");
+            sb.append("Costo total del camino:" + " " + camino.getCostoTotal() + "\n");
+            sb.append("Holgura" + " " +  (caminoCritico.getCostoTotal() - camino.getCostoTotal()) + "\n");
+        }
+        return sb.toString();
+    }
+
+    public void imprimirHolgurasConsola() {
+        System.out.println(holgura());
+    }
+
 }

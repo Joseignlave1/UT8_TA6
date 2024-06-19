@@ -480,5 +480,10 @@ public class PruebaGrafo {
         todosLosCaminos.imprimirCaminosConsolaYCostoTotal();
 
 
+        TCamino caminoCritico = todosLosCaminos.caminoCritico();
+        System.out.println("Camino crítico: " + caminoCritico.imprimirEtiquetas());
+        System.out.println("Costo total del camino crítico: " + caminoCritico.getCostoTotal());
+
+        todosLosCaminos.imprimirHolgurasConsola();
     }
 }
