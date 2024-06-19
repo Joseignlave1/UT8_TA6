@@ -297,4 +297,18 @@ public class TVertice<T> implements IVertice,IVerticeKevinBacon {
         this.numDescendientes = numDesc;
         return numDesc;
     }
+
+    public void ordenParcial(Set<TVertice> verticesVisitados, LinkedList<String> resultado) {
+        //Visitamos el primer vértice
+        verticesVisitados.add(this);
+
+        for(TAdyacencia adyacencia : this.adyacentes) {
+            TVertice destino = adyacencia.getDestino();
+            if(!verticesVisitados.contains(destino)) {
+                ordenParcial(verticesVisitados,resultado);
+            }
+        }
+        //Agregamos el elemento al principio de la linkedlist
+        resultado.addFirst(this.etiqueta.toString());
+    }
 }

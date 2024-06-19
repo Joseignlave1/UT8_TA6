@@ -539,4 +539,23 @@ public class TGrafoDirigido implements IGrafoDirigido {
             }
         }
     }
+
+    public LinkedList<String> ordenParcial() {
+        desvisitarVertices();
+        LinkedList<String> resultado = new LinkedList<>();
+        Set<TVertice> verticesVisitados = new HashSet<>();
+
+        for(TVertice vertice : vertices.values()) {
+            if(!verticesVisitados.contains(vertice)) {
+                vertice.ordenParcial(verticesVisitados,resultado);
+            }
+        }
+        return resultado;
+    }
+
+    public void listarTareas (LinkedList<String> orden) {
+        for(String tarea : orden) {
+            System.out.println(tarea);
+        }
+    }
 }

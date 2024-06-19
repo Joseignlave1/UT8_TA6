@@ -290,6 +290,8 @@ public class PruebaGrafo {
 
 
         //CLASIFICAR ÁRCOS DEL ÁRBOL
+
+        /*
         TVertice vA = new TVertice("A");
         TVertice vB = new TVertice("B");
         TVertice vC = new TVertice("C");
@@ -334,6 +336,7 @@ public class PruebaGrafo {
         for (TArista arista : arcosCruzados) {
             System.out.println(arista.getEtiquetaOrigen() + " -> " + arista.getEtiquetaDestino());
         }
+         */
 //        List<List<TVertice>> componentesFuertementeConexos = grafoDirigido.encontrarComponentesFuertementeConectados();
 //
 //        System.out.println("Componentes fuertemente conexos del grafo");
@@ -353,5 +356,43 @@ public class PruebaGrafo {
 //        }
 
 
+
+        String[] lineasTareas = ManejadorArchivosGenerico.leerArchivo("src/tareas.txt", false);
+        List<TVertice> vertices = new ArrayList<>();
+        for (String linea : lineasTareas) {
+            String[] partes = linea.split(" ");
+            String etiqueta = partes[1];
+            vertices.add(new TVertice(etiqueta));
+        }
+
+        String[] lineasPrecedencias = ManejadorArchivosGenerico.leerArchivo("./src/precedencias.txt", false);
+        List<TArista> aristas = new ArrayList<>();
+        for (String linea : lineasPrecedencias) {
+            String[] partes = linea.split(" ");
+            String origen = partes[0];
+            String destino = partes[1];
+            aristas.add(new TArista(origen, destino, 1.0));
+        }
+
+        TGrafoDirigido grafoDirigido = new TGrafoDirigido(vertices, aristas);
+
+        LinkedList<String> ordenParcial = grafoDirigido.ordenParcial();
+
+        grafoDirigido.listarTareas(ordenParcial);
+        ManejadorArchivosGenerico.escribirArchivo("orden.txt", ordenParcial.toArray(new String[0]));
+
+        lineasPrecedencias = ManejadorArchivosGenerico.leerArchivo("./src/precedencias2.txt", false);
+        aristas = new ArrayList<>();
+        for (String linea : lineasPrecedencias) {
+            String[] partes = linea.split(" ");
+            String origen = partes[0];
+            String destino = partes[1];
+            aristas.add(new TArista(origen, destino, 1.0));
+        }
+
+        grafoDirigido = new TGrafoDirigido(vertices, aristas);
+        ordenParcial = grafoDirigido.ordenParcial();
+        grafoDirigido.listarTareas(ordenParcial);
+        ManejadorArchivosGenerico.escribirArchivo("orden2.txt", ordenParcial.toArray(new String[0]));
     }
 }
