@@ -118,7 +118,6 @@ public class TVertice<T> implements IVertice,IVerticeKevinBacon {
     }
     public TCaminos todosLosCaminos(Comparable etVertDest, TCamino caminoPrevio, TCaminos todosLosCaminos) {
         this.setVisitado(true);
-
         for (TAdyacencia adyacencia : this.getAdyacentes()) {
             TVertice destino = adyacencia.getDestino();
 
