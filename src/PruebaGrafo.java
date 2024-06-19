@@ -356,22 +356,62 @@ public class PruebaGrafo {
 //        }
 
 
+//
+//        String[] lineasTareas = ManejadorArchivosGenerico.leerArchivo("src/tareas.txt", false);
+//        List<TVertice> vertices = new ArrayList<>();
+//        for (String linea : lineasTareas) {
+//            String[] partes = linea.split(" ");
+//            String etiqueta = partes[1];
+//            vertices.add(new TVertice(etiqueta));
+//        }
+//
+//        String[] lineasPrecedencias = ManejadorArchivosGenerico.leerArchivo("./src/precedencias.txt", false);
+//        List<TArista> aristas = new ArrayList<>();
+//        for (String linea : lineasPrecedencias) {
+//            String[] partes = linea.split(" ");
+//            String origen = partes[0];
+//            String destino = partes[1];
+//            aristas.add(new TArista(origen, destino, 1.0));
+//        }
+//
+//        TGrafoDirigido grafoDirigido = new TGrafoDirigido(vertices, aristas);
+//
+//        LinkedList<String> ordenParcial = grafoDirigido.ordenParcial();
+//
+//        grafoDirigido.listarTareas(ordenParcial);
+//        ManejadorArchivosGenerico.escribirArchivo("orden.txt", ordenParcial.toArray(new String[0]));
+//
+//        lineasPrecedencias = ManejadorArchivosGenerico.leerArchivo("./src/precedencias2.txt", false);
+//        aristas = new ArrayList<>();
+//        for (String linea : lineasPrecedencias) {
+//            String[] partes = linea.split(" ");
+//            String origen = partes[0];
+//            String destino = partes[1];
+//            aristas.add(new TArista(origen, destino, 1.0));
+//        }
+//
+//        grafoDirigido = new TGrafoDirigido(vertices, aristas);
+//        ordenParcial = grafoDirigido.ordenParcial();
+//        grafoDirigido.listarTareas(ordenParcial);
+//        ManejadorArchivosGenerico.escribirArchivo("orden2.txt", ordenParcial.toArray(new String[0]));
 
-        String[] lineasTareas = ManejadorArchivosGenerico.leerArchivo("src/tareas.txt", false);
+
+
+           String[] lineasTareas = ManejadorArchivosGenerico.leerArchivo("src/tareasTA6.txt", false);
         List<TVertice> vertices = new ArrayList<>();
         for (String linea : lineasTareas) {
-            String[] partes = linea.split(" ");
-            String etiqueta = partes[1];
+            String[] partes = linea.split(",");
+            String etiqueta = partes[0];
             vertices.add(new TVertice(etiqueta));
         }
 
-        String[] lineasPrecedencias = ManejadorArchivosGenerico.leerArchivo("./src/precedencias.txt", false);
+        String[] lineasPrecedencias = ManejadorArchivosGenerico.leerArchivo("src/precedenciasTA6.txt", false);
         List<TArista> aristas = new ArrayList<>();
         for (String linea : lineasPrecedencias) {
-            String[] partes = linea.split(" ");
+            String[] partes = linea.split(",");
             String origen = partes[0];
             String destino = partes[1];
-            aristas.add(new TArista(origen, destino, 1.0));
+            aristas.add(new TArista(origen, destino, 0));
         }
 
         TGrafoDirigido grafoDirigido = new TGrafoDirigido(vertices, aristas);
@@ -379,20 +419,6 @@ public class PruebaGrafo {
         LinkedList<String> ordenParcial = grafoDirigido.ordenParcial();
 
         grafoDirigido.listarTareas(ordenParcial);
-        ManejadorArchivosGenerico.escribirArchivo("orden.txt", ordenParcial.toArray(new String[0]));
 
-        lineasPrecedencias = ManejadorArchivosGenerico.leerArchivo("./src/precedencias2.txt", false);
-        aristas = new ArrayList<>();
-        for (String linea : lineasPrecedencias) {
-            String[] partes = linea.split(" ");
-            String origen = partes[0];
-            String destino = partes[1];
-            aristas.add(new TArista(origen, destino, 1.0));
-        }
-
-        grafoDirigido = new TGrafoDirigido(vertices, aristas);
-        ordenParcial = grafoDirigido.ordenParcial();
-        grafoDirigido.listarTareas(ordenParcial);
-        ManejadorArchivosGenerico.escribirArchivo("orden2.txt", ordenParcial.toArray(new String[0]));
     }
 }

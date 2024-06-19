@@ -305,7 +305,7 @@ public class TVertice<T> implements IVertice,IVerticeKevinBacon {
         for(TAdyacencia adyacencia : this.adyacentes) {
             TVertice destino = adyacencia.getDestino();
             if(!verticesVisitados.contains(destino)) {
-                ordenParcial(verticesVisitados,resultado);
+                destino.ordenParcial(verticesVisitados,resultado);
             }
         }
         //Agregamos el elemento al principio de la linkedlist
