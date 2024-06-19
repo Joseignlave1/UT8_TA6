@@ -329,10 +329,27 @@ public class TGrafoDirigido implements IGrafoDirigido {
         }
     }
 
+    public void bpfConEtiquetaVerticeInicial(Comparable etiquetaVerticeInicial) {
+        TVertice verticeInicial = this.buscarVertice(etiquetaVerticeInicial);
+        if(verticeInicial == null) {
+            System.out.println("No existe este vértice en el grafo");
+        }
+        for(TVertice vertice : vertices.values()) {
+            vertice.setVisitado(false);
+        }
+        bpfAuxiliar(verticeInicial);
+
+        for(TVertice vertice : vertices.values()) {
+            if(!vertice.getVisitado()) {
+                bpfAuxiliar(vertice);
+            }
+        }
+    }
+
     private void bpfAuxiliar(TVertice vertice) {
         //Visitamos el vértice inicial
         vertice.setVisitado(true);
-
+        System.out.println("Visitando vértice" +  " " + vertice.getEtiqueta());
         for(Object objadyacencia : vertice.getAdyacentes()) {
             if(objadyacencia instanceof TAdyacencia) {
                 TAdyacencia adyacencia = (TAdyacencia) objadyacencia;
