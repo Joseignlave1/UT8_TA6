@@ -22,12 +22,12 @@ public class PruebaGrafo {
             System.out.println("Centro del grafo: " + gd.centroDelGrafo());
          */
 
-        //Ejercicio 1
+//        //Ejercicio 1
 //        TGrafoDirigido gd = (TGrafoDirigido) UtilGrafos.cargarGrafo("./src/aeropuertos.txt", "./src/conexiones.txt",
 //                false, TGrafoDirigido.class);
 //
 //        Object[] etiquetasarray = gd.getEtiquetasOrdenado();
-
+//
 //        Double[][] matriz = UtilGrafos.obtenerMatrizCostos(gd.getVertices());
 //        UtilGrafos.imprimirMatrizMejorado(matriz, gd.getVertices(), "Matriz");
 //        Double[][] mfloyd = gd.floyd();
@@ -40,8 +40,8 @@ public class PruebaGrafo {
 //
 //        boolean[][] mWarshall = gd.warshall();
 //        UtilGrafos.imprimirMatrizWarshall(mWarshall, gd.getVertices(), "Matriz luego de Warshall");
-
-        //gd.bpf();
+//
+//        gd.bpf();
         /*
              TCaminos todosLosCaminos = gd.todosLosCaminos("Montevideo","Rio_de_Janeiro");
 
@@ -397,28 +397,50 @@ public class PruebaGrafo {
 
 
 
-           String[] lineasTareas = ManejadorArchivosGenerico.leerArchivo("src/tareasTA6.txt", false);
-        List<TVertice> vertices = new ArrayList<>();
-        for (String linea : lineasTareas) {
-            String[] partes = linea.split(",");
-            String etiqueta = partes[0];
-            vertices.add(new TVertice(etiqueta));
+//           String[] lineasTareas = ManejadorArchivosGenerico.leerArchivo("src/tareasTA6.txt", false);
+//        List<TVertice> vertices = new ArrayList<>();
+//        for (String linea : lineasTareas) {
+//            String[] partes = linea.split(",");
+//            String etiqueta = partes[0];
+//            vertices.add(new TVertice(etiqueta));
+//        }
+//
+//        String[] lineasPrecedencias = ManejadorArchivosGenerico.leerArchivo("src/precedenciasTA6.txt", false);
+//        List<TArista> aristas = new ArrayList<>();
+//        for (String linea : lineasPrecedencias) {
+//            String[] partes = linea.split(",");
+//            String origen = partes[0];
+//            String destino = partes[1];
+//            aristas.add(new TArista(origen, destino, 0));
+//        }
+//
+//        TGrafoDirigido grafoDirigido = new TGrafoDirigido(vertices, aristas);
+//
+//        LinkedList<String> ordenParcial = grafoDirigido.ordenParcial();
+//
+//        grafoDirigido.listarTareas(ordenParcial);
+
+        //UT7_TA3
+
+        TGrafoDirigido gd = (TGrafoDirigido) UtilGrafos.cargarGrafo("./src/aeropuertos.txt", "./src/conexiones.txt",
+                false, TGrafoDirigido.class);
+
+        Object[] etiquetasarray = gd.getEtiquetasOrdenado();
+
+        Double[][] matriz = UtilGrafos.obtenerMatrizCostos(gd.getVertices());
+        UtilGrafos.imprimirMatrizMejorado(matriz, gd.getVertices(), "Matriz");
+        Double[][] mfloyd = gd.floyd();
+        UtilGrafos.imprimirMatrizMejorado(mfloyd, gd.getVertices(), "Matriz luego de FLOYD");
+        for (int i = 0; i < etiquetasarray.length; i++) {
+            System.out.println("excentricidad de " + etiquetasarray[i] + " : " + gd.obtenerExcentricidad((Comparable) etiquetasarray[i]));
         }
+        System.out.println();
+        System.out.println("Centro del grafo: " + gd.centroDelGrafo());
 
-        String[] lineasPrecedencias = ManejadorArchivosGenerico.leerArchivo("src/precedenciasTA6.txt", false);
-        List<TArista> aristas = new ArrayList<>();
-        for (String linea : lineasPrecedencias) {
-            String[] partes = linea.split(",");
-            String origen = partes[0];
-            String destino = partes[1];
-            aristas.add(new TArista(origen, destino, 0));
-        }
+        boolean[][] mWarshall = gd.warshall();
+        UtilGrafos.imprimirMatrizWarshall(mWarshall, gd.getVertices(), "Matriz luego de Warshall");
 
-        TGrafoDirigido grafoDirigido = new TGrafoDirigido(vertices, aristas);
-
-        LinkedList<String> ordenParcial = grafoDirigido.ordenParcial();
-
-        grafoDirigido.listarTareas(ordenParcial);
+        gd.bpf();
 
     }
 }
