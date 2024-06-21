@@ -346,6 +346,25 @@ public class TGrafoDirigido implements IGrafoDirigido {
         }
     }
 
+
+    public boolean bpfKruskal(TVertice actual, Comparable destino, Set<Comparable> visitados) {
+        if (actual.getEtiqueta().equals(destino)) {
+            return true;
+        }
+
+        visitados.add(actual.getEtiqueta());
+        LinkedList<TAdyacencia> adyacentes = actual.getAdyacentes();
+        for (TAdyacencia adyacencia : adyacentes) {
+            TVertice verticeDestino = adyacencia.getDestino();
+            if (!visitados.contains(verticeDestino.getEtiqueta())) {
+                if (bpfKruskal(verticeDestino, destino, visitados)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
     private void bpfAuxiliar(TVertice vertice) {
         //Visitamos el vértice inicial
         vertice.setVisitado(true);

@@ -460,30 +460,206 @@ public class PruebaGrafo {
 //        gd.bpfConEtiquetaVerticeInicial("Asuncion");
 
 
-        TGrafoDirigido gd = (TGrafoDirigido) UtilGrafos.cargarGrafo("./src/aeropuertos_2.txt", "./src/conexiones_2.txt",
-                false, TGrafoDirigido.class);
 
-        Object[] etiquetasarray = gd.getEtiquetasOrdenado();
 
-        Double[][] matriz = UtilGrafos.obtenerMatrizCostos(gd.getVertices());
-        UtilGrafos.imprimirMatrizMejorado(matriz, gd.getVertices(), "Matriz");
-        Double[][] mfloyd = gd.floyd();
-        UtilGrafos.imprimirMatrizMejorado(mfloyd, gd.getVertices(), "Matriz luego de FLOYD");
-        for (int i = 0; i < etiquetasarray.length; i++) {
-            System.out.println("excentricidad de " + etiquetasarray[i] + " : " + gd.obtenerExcentricidad((Comparable) etiquetasarray[i]));
+//        TGrafoDirigido gd = (TGrafoDirigido) UtilGrafos.cargarGrafo("./src/aeropuertos_2.txt", "./src/conexiones_2.txt",
+//                false, TGrafoDirigido.class);
+//
+//        Object[] etiquetasarray = gd.getEtiquetasOrdenado();
+//
+//        Double[][] matriz = UtilGrafos.obtenerMatrizCostos(gd.getVertices());
+//        UtilGrafos.imprimirMatrizMejorado(matriz, gd.getVertices(), "Matriz");
+//        Double[][] mfloyd = gd.floyd();
+//        UtilGrafos.imprimirMatrizMejorado(mfloyd, gd.getVertices(), "Matriz luego de FLOYD");
+//        for (int i = 0; i < etiquetasarray.length; i++) {
+//            System.out.println("excentricidad de " + etiquetasarray[i] + " : " + gd.obtenerExcentricidad((Comparable) etiquetasarray[i]));
+//        }
+//        System.out.println();
+//        System.out.println("Centro del grafo: " + gd.centroDelGrafo());
+//
+//        TCaminos todosLosCaminos = gd.todosLosCaminos("Buenos_Aires","Montevideo");
+//
+//        todosLosCaminos.imprimirCaminosConsolaYCostoTotal();
+//
+//
+//        TCamino caminoCritico = todosLosCaminos.caminoCritico();
+//        System.out.println("Camino crítico: " + caminoCritico.imprimirEtiquetas());
+//        System.out.println("Costo total del camino crítico: " + caminoCritico.getCostoTotal());
+//
+//        todosLosCaminos.imprimirHolgurasConsola();
+
+
+//        TVertice verticeB = new TVertice("B");
+//        TVertice verticeD = new TVertice("D");
+//        TVertice verticeE = new TVertice("E");
+//        TVertice verticeA = new TVertice("A");
+//        TVertice verticeC  = new TVertice("C");
+//        TVertice verticeF  = new TVertice("F");
+//        TVertice verticeG  = new TVertice("G");
+//
+//        TArista aristaBD = new TArista("B", "D", 0);
+//        TArista aristaBE = new TArista("B", "E", 0);
+//        TArista aristaBA = new TArista("B", "A", 0);
+//        TArista aristaEC = new TArista("E", "C", 0);
+//        TArista aristaCF = new TArista("C", "F", 0);
+//        TArista aristaCG = new TArista("C", "G", 0);
+//
+//        Collection<TVertice> vertices = new ArrayList<>();
+//        vertices.add(verticeA);
+//        vertices.add(verticeB);
+//        vertices.add(verticeC);
+//        vertices.add(verticeD);
+//        vertices.add(verticeE);
+//        vertices.add(verticeF);
+//        vertices.add(verticeG);
+//
+//        LinkedList<TArista> aristas = new LinkedList<>();
+//        aristas.add(aristaBD);
+//        aristas.add(aristaBE);
+//        aristas.add(aristaBA);
+//        aristas.add(aristaEC);
+//        aristas.add(aristaCF);
+//        aristas.add(aristaCG);
+//
+//        TGrafoNoDirigido grafo = new TGrafoNoDirigido(vertices, aristas);
+//
+//        Collection<TVertice> bosqueAbarcador = grafo.beaDesdeVerticeInicial("B");
+//
+//        for (TVertice vertice : bosqueAbarcador) {
+//            System.out.println(vertice.getEtiqueta());
+//        }
+
+
+        //Kruskal UT8_PD2
+//        TVertice verticeA = new TVertice("A");
+//        TVertice verticeB = new TVertice("B");
+//        TVertice verticeC = new TVertice("C");
+//        TVertice verticeD = new TVertice("D");
+//        TVertice verticeE  = new TVertice("E");
+//
+//        TArista aristaAB = new TArista("A", "B", 1);
+//        TArista aristaAC = new TArista("A", "C", 5);
+//        TArista aristaBC = new TArista("B", "C", 2);
+//        TArista aristaBD = new TArista("B", "D", 4);
+//        TArista aristaCD = new TArista("C", "D", 3);
+//        TArista aristaCE = new TArista("C", "E", 6);
+//        TArista aristaDE = new TArista("D", "E", 7);
+//
+//        Collection<TVertice> vertices = new ArrayList<>();
+//        vertices.add(verticeA);
+//        vertices.add(verticeB);
+//        vertices.add(verticeC);
+//        vertices.add(verticeD);
+//        vertices.add(verticeE);
+//
+//        LinkedList<TArista> aristas = new LinkedList<>();
+//        aristas.add(aristaAB);
+//        aristas.add(aristaAC);
+//        aristas.add(aristaBC);
+//        aristas.add(aristaBD);
+//        aristas.add(aristaCD);
+//        aristas.add(aristaCE);
+//        aristas.add(aristaDE);
+//
+//        TGrafoNoDirigido grafo = new TGrafoNoDirigido(vertices, aristas);
+//
+//
+//        TGrafoNoDirigido arbolExpansionMinima = grafo.Kruskal();
+//
+//        System.out.println("Aristas del Árbol de Expansión Mínima:");
+//        for (TArista arista : arbolExpansionMinima.getLasAristas()) {
+//            System.out.println(arista.getEtiquetaOrigen() + " - " + arista.getEtiquetaDestino() + " : " + arista.getCosto());
+//        }
+
+        //Kruskal UT8_PD2
+
+        // 1 2 Y 3
+        TVertice verticeA = new TVertice("A");
+        TVertice verticeB = new TVertice("B");
+        TVertice verticeC = new TVertice("C");
+        TVertice verticeD = new TVertice("D");
+        TVertice verticeE  = new TVertice("E");
+        TVertice verticeF  = new TVertice("F");
+
+        TArista aristaAB = new TArista("A", "B", 4);
+        TArista aristaAF = new TArista("A", "F", 2);
+        TArista aristaBC = new TArista("B", "C", 6);
+        TArista aristaBF = new TArista("B", "F", 3);
+        TArista aristaCD = new TArista("C", "D", 8);
+        TArista aristaCE = new TArista("C", "E", 5);
+        TArista aristaDE = new TArista("D", "E", 1);
+        TArista aristaEF = new TArista("E", "F", 7);
+
+        Collection<TVertice> vertices = new ArrayList<>();
+        vertices.add(verticeA);
+        vertices.add(verticeB);
+        vertices.add(verticeC);
+        vertices.add(verticeD);
+        vertices.add(verticeE);
+        vertices.add(verticeF);
+        LinkedList<TArista> aristas = new LinkedList<>();
+        aristas.add(aristaAB);
+        aristas.add(aristaAF);
+        aristas.add(aristaBC);
+        aristas.add(aristaBF);
+        aristas.add(aristaCD);
+        aristas.add(aristaCE);
+        aristas.add(aristaDE);
+        aristas.add(aristaEF);
+        TGrafoNoDirigido grafo = new TGrafoNoDirigido(vertices, aristas);
+
+
+        TGrafoNoDirigido arbolExpansionMinima = grafo.Kruskal();
+        TGrafoNoDirigido AAM = grafo.Prim();
+
+
+        System.out.println("Aristas del Árbol de Expansión Mínima KRUSKAL:");
+        for (TArista arista : arbolExpansionMinima.getLasAristas()) {
+            System.out.println(arista.getEtiquetaOrigen() + " - " + arista.getEtiquetaDestino() + " : " + arista.getCosto());
         }
-        System.out.println();
-        System.out.println("Centro del grafo: " + gd.centroDelGrafo());
 
-        TCaminos todosLosCaminos = gd.todosLosCaminos("Buenos_Aires","Montevideo");
+        System.out.println("Aristas del Árbol de Expansión Mínima PRIM:");
+        for (TArista arista : AAM.getLasAristas()) {
+            System.out.println(arista.getEtiquetaOrigen() + " - " + arista.getEtiquetaDestino() + " : " + arista.getCosto());
+        }
 
-        todosLosCaminos.imprimirCaminosConsolaYCostoTotal();
+        /*
+            Estructuras de datos utilizadas para la implementación de Kruskal:
+
+            TGrafoNoDirigido:
+
+            Representa el grafo no dirigido.
+
+            Contiene los vértices (Map<Comparable, TVertice> vertices) y las aristas (TAristas lasAristas).
+
+            TAristas:
+
+            Representa un conjunto de aristas.
+
+            Se utiliza tanto para almacenar las aristas del grafo original (aristasSinOrdenar) como las aristas ordenadas por costo (aristasOrdenadas).
+
+            TArista:
+
+            Representa una arista del grafo con atributos como etiquetaOrigen, etiquetaDestino y costo.
+
+            TVertice:
+
+            Representa un vértice del grafo con atributos como etiqueta y métodos para la gestión de adyacentes.
+
+            Tiempo de ejecución
+
+            O(E(V+E))
+         */
+
+        /*
+            5) Sí, se podrían realizsar modificaciónes para qué el algoritmo tuviera un orden de tiempo de ejecución de O(ElogE).
+
+            6) El consumo de memoria es muy importante y un elemento a tener muy en cuenta si se trabaja con grafos grandes.
 
 
-        TCamino caminoCritico = todosLosCaminos.caminoCritico();
-        System.out.println("Camino crítico: " + caminoCritico.imprimirEtiquetas());
-        System.out.println("Costo total del camino crítico: " + caminoCritico.getCostoTotal());
 
-        todosLosCaminos.imprimirHolgurasConsola();
+         */
+
+
     }
 }

@@ -78,15 +78,7 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
 
         //Primero ordenamos las aristas de menor a mayor por costo, así no tenemos que estár siempre buscando la menor en cada iteracción
 
-        aristasSinOrdenar.sort((TArista arista1, TArista arista2) -> {
-            if(arista1.costo < arista2.costo) {
-                return -1;
-            } else if(arista1.costo > arista2.costo) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
+        aristasSinOrdenar.sort(Comparator.comparingDouble((TArista arista) -> arista.costo));
 
         TAristas aristasOrdenadas = new TAristas();
         aristasOrdenadas.addAll(aristasSinOrdenar);
@@ -98,7 +90,7 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
             TArista aristaMinima = aristasOrdenadas.removeFirst();
             TVertice verticeOrigen = AAM.getVertices().get(aristaMinima.getEtiquetaOrigen());
             TVertice verticeDestino = AAM.getVertices().get(aristaMinima.getEtiquetaDestino());
-            if(!AAM.estanConectados(verticeOrigen.getEtiqueta(), verticeDestino.getEtiqueta())) {
+            if(!AAM.estanConectadosKruskal(verticeOrigen.getEtiqueta(), verticeDestino.getEtiqueta())) {
                 AAM.insertarArista(aristaMinima);
                 //Agrego también la inversa de la arista mínima ya qué para representar una conexión entre dos vértices en un
                 //Grafo no dirigido es bidireccional de B a A se representa como B -> A Y A -> B
@@ -119,6 +111,18 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
         }
     }
 
+    private boolean estanConectadosKruskal(Comparable etiquetaVertice1, Comparable etiquetaVertice2) {
+        TVertice v1 = buscarVertice(etiquetaVertice1);
+        TVertice v2 = buscarVertice(etiquetaVertice2);
+
+        if (v1 == null || v2 == null) {
+            return false;
+        }
+
+        Set<Comparable> visitados = new HashSet<>();
+        return bpfKruskal(v1, etiquetaVertice2, visitados);
+    }
+
 
 
     //HACE BEA A TODOS LOS VÉRTICES, LOS VISITA EN EL ORDEN EN QUE LOS ENCUENTRA
@@ -136,7 +140,7 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
 
     //HACE BEA DESDE UN VÉRTICE ESPECÍFICO, VISITA EL PROPIO VÉRTICE, SUS ADYACENTES Y SUS DESCENDIENTES.
     @Override
-    public Collection<TVertice> bea(Comparable etiquetaOrigen) {
+    public Collection<TVertice> beaDesdeVerticeInicial(Comparable etiquetaOrigen) {
         Collection<TVertice> verticesVisitados = new LinkedList<>();
         desvisitarVertices();
         TVertice verticeOrigen = getVertices().get(etiquetaOrigen);

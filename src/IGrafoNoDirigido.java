@@ -7,7 +7,7 @@ public interface IGrafoNoDirigido {
 
     public Collection <TVertice> bea();
     
-	public Collection <TVertice> bea(Comparable etiquetaOrigen);
+	public Collection <TVertice> beaDesdeVerticeInicial(Comparable etiquetaOrigen);
     
 	public TGrafoNoDirigido Prim();
 
