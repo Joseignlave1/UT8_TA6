@@ -81,19 +81,19 @@ T = Conjunto de aristas, al principio vacío.
 
 U = nuevoConjuntoVertices()  // Conjunto de vértices incluidos en el AAM
 
-colaDePrioridad = nuevaColaDePrioridad()  // Cola de prioridad para seleccionar aristas de menor costo
+colaDePrioridad = nuevaColaDePrioridad()  
 
 U.añadir(VerticeSubEstacionElectrica)
 para cada arista a conectada a VerticeSubEstacionElectrica hacer
   colaDePrioridad.insertar(a, a.ObtenerCosto())
 fin para cada
 
-mientras U ≠ V hacer
-  aristaMenorCosto = colaDePrioridad.extraerMin()  // Extraer la arista de menor costo
+mientras U <> V hacer
+  aristaMenorCosto = colaDePrioridad.extraerMin() 
 
   si aristaMenorCosto.destino no está en U entonces
-    T.añadir(aristaMenorCosto)  // Añadir la arista de menor costo al conjunto T
-    U.añadir(aristaMenorCosto.destino)  // Añadir el vértice de destino al conjunto U
+    T.añadir(aristaMenorCosto)  
+    U.añadir(aristaMenorCosto.destino) 
 
     para cada arista a conectada a aristaMenorCosto.destino hacer
       si a.destino no está en U entonces
@@ -103,9 +103,9 @@ mientras U ≠ V hacer
   fin si
 fin mientras
 
-devolver nuevoGrafoNoDirigido(U, T)  // Crear y devolver el nuevo grafo con los vértices y aristas del AAM
+devolver nuevoGrafoNoDirigido(U, T) 
 
-// Función auxiliar para buscar un vértice dado su etiqueta
+
 función buscarVertice(unaEtiqueta)
   devolver vertices.obtener(unaEtiqueta)
 fin función
