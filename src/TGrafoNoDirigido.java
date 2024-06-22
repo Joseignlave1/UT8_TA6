@@ -90,7 +90,7 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
             TArista aristaMinima = aristasOrdenadas.removeFirst();
             TVertice verticeOrigen = AAM.getVertices().get(aristaMinima.getEtiquetaOrigen());
             TVertice verticeDestino = AAM.getVertices().get(aristaMinima.getEtiquetaDestino());
-            if(!AAM.estanConectadosKruskal(verticeOrigen.getEtiqueta(), verticeDestino.getEtiqueta())) {
+            if(!AAM.estanConectadosConEtiquetaVertices(verticeOrigen.getEtiqueta(), verticeDestino.getEtiqueta())) {
                 AAM.insertarArista(aristaMinima);
                 //Agrego también la inversa de la arista mínima ya qué para representar una conexión entre dos vértices en un
                 //Grafo no dirigido es bidireccional de B a A se representa como B -> A Y A -> B
@@ -101,7 +101,7 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
         return AAM;
     }
 
-    private boolean estanConectados(Comparable etiquetaVertice1, Comparable etiquetaVertice2) {
+    public boolean sonAdyacentesConEtiquetaVerticeInicial(Comparable etiquetaVertice1, Comparable etiquetaVertice2) {
         TVertice v = buscarVertice(etiquetaVertice1);
         //Si son  adyacentes(están conectados)
         if(v.buscarAdyacencia(etiquetaVertice2) != null) {
@@ -111,7 +111,16 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
         }
     }
 
-    private boolean estanConectadosKruskal(Comparable etiquetaVertice1, Comparable etiquetaVertice2) {
+    public boolean sonAdyacentes(TVertice vertice1, TVertice vertice2) {
+        //Verifica si dos vértices son adyacentes
+        if(vertice1.buscarAdyacencia(vertice2) != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean estanConectadosConEtiquetaVertices(Comparable etiquetaVertice1, Comparable etiquetaVertice2) {
         TVertice v1 = buscarVertice(etiquetaVertice1);
         TVertice v2 = buscarVertice(etiquetaVertice2);
 
@@ -123,7 +132,15 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
         return bpfKruskal(v1, etiquetaVertice2, visitados);
     }
 
+    public boolean estanConectados(TVertice vertice1, TVertice vertice2) {
 
+        if (vertice1 == null || vertice2 == null) {
+            return false;
+        }
+
+        Set<Comparable> visitados = new HashSet<>();
+        return bpfKruskalConVertices(vertice1, vertice2.getEtiqueta(), visitados);
+    }
 
     //HACE BEA A TODOS LOS VÉRTICES, LOS VISITA EN EL ORDEN EN QUE LOS ENCUENTRA
     @Override

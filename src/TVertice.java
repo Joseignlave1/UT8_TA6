@@ -253,6 +253,7 @@ public class TVertice<T> implements IVertice,IVerticeKevinBacon {
     //Clasificar arcos
 
 
+
     private int numBpf;
     private int numDescendientes;
     public void clasificarArcos(List<TArista> arcosArbol, List<TArista> arcosRetroceso, List<TArista> arcosAvance, List<TArista> arcosCruzados) {
