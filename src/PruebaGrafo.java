@@ -700,41 +700,62 @@ public class PruebaGrafo {
 //
 //                //PEDIRLE AYUDA AL PROFE PARA ARREGLAR MÉTODO DE ESTÁNCONECTADOS PASANDOLE LOS VÉRTICES POR PARÁMETRO.
 
-        TGrafoRedElectrica gd = (TGrafoRedElectrica) UtilGrafos.cargarGrafo("./src/barrio.txt","./src/distancias.txt",
-                false,  TGrafoRedElectrica.class);
 
-        Object[] etiquetasarray = gd.getEtiquetasOrdenado();
 
-        Double[][] matriz = UtilGrafos.obtenerMatrizCostos(gd.getVertices());
-        UtilGrafos.imprimirMatrizMejorado(matriz, gd.getVertices(), "Matriz");
-        Double[][] mfloyd = gd.floyd();
-        UtilGrafos.imprimirMatrizMejorado(mfloyd, gd.getVertices(), "Matriz luego de FLOYD");
-        for (int i = 0; i < etiquetasarray.length; i++) {
-            System.out.println("excentricidad de " + etiquetasarray[i] + " : " + gd.obtenerExcentricidad((Comparable) etiquetasarray[i]));
+//        TGrafoRedElectrica gd = (TGrafoRedElectrica) UtilGrafos.cargarGrafo("./src/barrio.txt","./src/distancias.txt",
+//                false,  TGrafoRedElectrica.class);
+//
+//        Object[] etiquetasarray = gd.getEtiquetasOrdenado();
+//
+//        Double[][] matriz = UtilGrafos.obtenerMatrizCostos(gd.getVertices());
+//        UtilGrafos.imprimirMatrizMejorado(matriz, gd.getVertices(), "Matriz");
+//        Double[][] mfloyd = gd.floyd();
+//        UtilGrafos.imprimirMatrizMejorado(mfloyd, gd.getVertices(), "Matriz luego de FLOYD");
+//        for (int i = 0; i < etiquetasarray.length; i++) {
+//            System.out.println("excentricidad de " + etiquetasarray[i] + " : " + gd.obtenerExcentricidad((Comparable) etiquetasarray[i]));
+//        }
+//        System.out.println();
+//        System.out.println("Centro del grafo: " + gd.centroDelGrafo());
+//
+//        TAristas resultado = gd.mejorRedElectrica();
+//
+//
+//        System.out.println("Resultado ");
+//
+//        double cantidadTotalCableado = 0;
+//        for(TArista arista : resultado) {
+//             cantidadTotalCableado += arista.getCosto();
+//        }
+//        System.out.println("Cantidad Total del cableado" + " " + cantidadTotalCableado);
+//
+//        List<String> lineas = new ArrayList<>();
+//        lineas.add("Cantidad total cableado" + " " + cantidadTotalCableado);
+//        for(TArista arista : resultado) {
+//            String linea = arista.getEtiquetaOrigen() + " " + arista.getEtiquetaDestino() + " " + arista.getCosto();
+//            System.out.println(linea);
+//            lineas.add(linea);
+//        }
+//
+//        String[] lineasArchivo = lineas.toArray(new String[0]);
+//        ManejadorArchivosGenerico.escribirArchivo("./src/redelectrica.txt", lineasArchivo);
+
+
+
+        TGrafoNoDirigido grafo = (TGrafoNoDirigido) UtilGrafos.cargarGrafo("./src/vert2.txt","./src/ari2.txt",
+                false, TGrafoNoDirigido.class);
+
+        TGrafoNoDirigido arbolExpansionMinima = grafo.Kruskal();
+        TGrafoNoDirigido AAM = grafo.Prim();
+
+
+        System.out.println("Aristas del Árbol de Expansión Mínima KRUSKAL:");
+        for (TArista arista : arbolExpansionMinima.getLasAristas()) {
+            System.out.println(arista.getEtiquetaOrigen() + " - " + arista.getEtiquetaDestino() + " : " + arista.getCosto());
         }
-        System.out.println();
-        System.out.println("Centro del grafo: " + gd.centroDelGrafo());
 
-        TAristas resultado = gd.mejorRedElectrica();
-
-
-        System.out.println("Resultado ");
-
-        double cantidadTotalCableado = 0;
-        for(TArista arista : resultado) {
-             cantidadTotalCableado += arista.getCosto();
+        System.out.println("Aristas del Árbol de Expansión Mínima PRIM:");
+        for (TArista arista : AAM.getLasAristas()) {
+            System.out.println(arista.getEtiquetaOrigen() + " - " + arista.getEtiquetaDestino() + " : " + arista.getCosto());
         }
-        System.out.println("Cantidad Total del cableado" + " " + cantidadTotalCableado);
-
-        List<String> lineas = new ArrayList<>();
-        lineas.add("Cantidad total cableado" + " " + cantidadTotalCableado);
-        for(TArista arista : resultado) {
-            String linea = arista.getEtiquetaOrigen() + " " + arista.getEtiquetaDestino() + " " + arista.getCosto();
-            System.out.println(linea);
-            lineas.add(linea);
-        }
-
-        String[] lineasArchivo = lineas.toArray(new String[0]);
-        ManejadorArchivosGenerico.escribirArchivo("./src/redelectrica.txt", lineasArchivo);
     }
 }
