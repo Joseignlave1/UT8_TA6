@@ -1,0 +1,99 @@
+UT8_TA6 
+
+PARTE 3 Comparación Prim y Kruskal manualmente:
+
+
+### Vértices:
+1, 2, 3, 4, 5, 6
+
+### Aristas:
+(1, 2, 6)
+(1, 3, 1)
+(1, 4, 5)
+(2, 3, 5)
+(2, 5, 3)
+(3, 4, 5)
+(3, 5, 6)
+(3, 6, 4)
+(4, 6, 2)
+(5, 6, 6)
+
+### Algoritmo de Prim
+
+#### Inicialización:
+Elegimos el nodo 1 como punto de partida:
+U = {1}
+
+Aristas posibles:
+(1, 2, 6), (1, 3, 1), (1, 4, 5)
+
+#### Primera iteración:
+Arista de menor costo: (1, 3, 1)
+Añadimos 3 a U:
+U = {1, 3}
+
+Aristas posibles:
+(1, 2, 6), (1, 4, 5), (3, 4, 5), (3, 5, 6), (3, 6, 4)
+
+#### Segunda iteración:
+Arista de menor costo: (3, 6, 4)
+Añadimos 6 a U:
+U = {1, 3, 6}
+
+Aristas posibles:
+(1, 2, 6), (1, 4, 5), (4, 6, 2), (3, 4, 5), (3, 5, 6), (5, 6, 6)
+
+#### Tercera iteración:
+Arista de menor costo: (4, 6, 2)
+Añadimos 4 a U:
+U = {1, 3, 4, 6}
+
+Aristas posibles:
+(1, 2, 6), (1, 4, 5), (2, 5, 3), (3, 4, 5), (3, 5, 6), (5, 6, 6)
+
+#### Cuarta iteración:
+Arista de menor costo: (2, 5, 3)
+Añadimos 2 a U:
+U = {1, 2, 3, 4, 6}
+
+Aristas posibles:
+(2, 3, 5), (2, 5, 3), (3, 4, 5), (3, 5, 6), (5, 6, 6)
+
+#### Quinta iteración:
+Arista de menor costo: (1, 4, 5)
+Añadimos 5 a U:
+U = {1, 2, 3, 4, 5, 6}
+
+### Árbol de Expansión Mínima (AAM):
+(1, 3, 1), (3, 6, 4), (4, 6, 2), (2, 5, 3), (1, 4, 5)
+
+### Algoritmo de Kruskal
+
+#### Inicialización:
+Ordenamos las aristas por costo:
+(1, 3, 1), (4, 6, 2), (2, 5, 3), (3, 6, 4), (1, 4, 5), (2, 3, 5), (3, 4, 5), (1, 2, 6), (3, 5, 6), (5, 6, 6)
+
+#### Iteraciones:
+
+1. Arista de menor costo: (1, 3, 1)
+   Añadimos (1, 3, 1) al AAM
+   Conjuntos: {1, 3}, {2}, {4}, {5}, {6}
+
+2. Arista de menor costo: (4, 6, 2)
+   Añadimos (4, 6, 2) al AAM
+   Conjuntos: {1, 3}, {2}, {4, 6}, {5}
+
+3. Arista de menor costo: (2, 5, 3)
+   Añadimos (2, 5, 3) al AAM
+   Conjuntos: {1, 3}, {2, 5}, {4, 6}
+
+4. Arista de menor costo: (3, 6, 4)
+   Añadimos (3, 6, 4) al AAM
+   Conjuntos: {1, 3, 4, 6}, {2, 5}
+
+5. Arista de menor costo: (1, 4, 5)
+   Añadimos (1, 4, 5) al AAM
+   Conjuntos: {1, 2, 3, 4, 5, 6}
+
+### Árbol de Expansión Mínima (AAM):
+(1, 3, 1), (4, 6, 2), (2, 5, 3), (3, 6, 4), (1, 4, 5)
