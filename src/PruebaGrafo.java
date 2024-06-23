@@ -660,46 +660,81 @@ public class PruebaGrafo {
 
          */
 
-                //Ejercicio 2 UT8_PD4
-                TVertice verticeA = new TVertice("A");
-                TVertice verticeB = new TVertice("B");
-                TVertice verticeC = new TVertice("C");
-                TVertice verticeD = new TVertice("D");
-                TVertice verticeE  = new TVertice("E");
-                TVertice verticeF  = new TVertice("F");
+//                //Ejercicio 2 UT8_PD4
+//                TVertice verticeA = new TVertice("A");
+//                TVertice verticeB = new TVertice("B");
+//                TVertice verticeC = new TVertice("C");
+//                TVertice verticeD = new TVertice("D");
+//                TVertice verticeE  = new TVertice("E");
+//                TVertice verticeF  = new TVertice("F");
+//
+//                TArista aristaAB = new TArista("A", "B", 4);
+//                TArista aristaAF = new TArista("A", "F", 2);
+//                TArista aristaBC = new TArista("B", "C", 6);
+//                TArista aristaBF = new TArista("B", "F", 3);
+//                TArista aristaCD = new TArista("C", "D", 8);
+//                TArista aristaCE = new TArista("C", "E", 5);
+//                TArista aristaDE = new TArista("D", "E", 1);
+//                TArista aristaEF = new TArista("E", "F", 7);
+//
+//                Collection<TVertice> vertices = new ArrayList<>();
+//                vertices.add(verticeA);
+//                vertices.add(verticeB);
+//                vertices.add(verticeC);
+//                vertices.add(verticeD);
+//                vertices.add(verticeE);
+//                vertices.add(verticeF);
+//                LinkedList<TArista> aristas = new LinkedList<>();
+//                aristas.add(aristaAB);
+//                aristas.add(aristaAF);
+//                aristas.add(aristaBC);
+//                aristas.add(aristaBF);
+//                aristas.add(aristaCD);
+//                aristas.add(aristaCE);
+//                aristas.add(aristaDE);
+//                aristas.add(aristaEF);
+//                TGrafoNoDirigido grafo = new TGrafoNoDirigido(vertices, aristas);
+//
+//                System.out.println(grafo.estanConectadosConEtiquetaVertices("A","B"));
+//
+//
+//                //PEDIRLE AYUDA AL PROFE PARA ARREGLAR MÉTODO DE ESTÁNCONECTADOS PASANDOLE LOS VÉRTICES POR PARÁMETRO.
 
-                TArista aristaAB = new TArista("A", "B", 4);
-                TArista aristaAF = new TArista("A", "F", 2);
-                TArista aristaBC = new TArista("B", "C", 6);
-                TArista aristaBF = new TArista("B", "F", 3);
-                TArista aristaCD = new TArista("C", "D", 8);
-                TArista aristaCE = new TArista("C", "E", 5);
-                TArista aristaDE = new TArista("D", "E", 1);
-                TArista aristaEF = new TArista("E", "F", 7);
+        TGrafoRedElectrica gd = (TGrafoRedElectrica) UtilGrafos.cargarGrafo("./src/barrio.txt","./src/distancias.txt",
+                false,  TGrafoRedElectrica.class);
 
-                Collection<TVertice> vertices = new ArrayList<>();
-                vertices.add(verticeA);
-                vertices.add(verticeB);
-                vertices.add(verticeC);
-                vertices.add(verticeD);
-                vertices.add(verticeE);
-                vertices.add(verticeF);
-                LinkedList<TArista> aristas = new LinkedList<>();
-                aristas.add(aristaAB);
-                aristas.add(aristaAF);
-                aristas.add(aristaBC);
-                aristas.add(aristaBF);
-                aristas.add(aristaCD);
-                aristas.add(aristaCE);
-                aristas.add(aristaDE);
-                aristas.add(aristaEF);
-                TGrafoNoDirigido grafo = new TGrafoNoDirigido(vertices, aristas);
+        Object[] etiquetasarray = gd.getEtiquetasOrdenado();
 
-                System.out.println(grafo.estanConectadosConEtiquetaVertices("A","B"));
+        Double[][] matriz = UtilGrafos.obtenerMatrizCostos(gd.getVertices());
+        UtilGrafos.imprimirMatrizMejorado(matriz, gd.getVertices(), "Matriz");
+        Double[][] mfloyd = gd.floyd();
+        UtilGrafos.imprimirMatrizMejorado(mfloyd, gd.getVertices(), "Matriz luego de FLOYD");
+        for (int i = 0; i < etiquetasarray.length; i++) {
+            System.out.println("excentricidad de " + etiquetasarray[i] + " : " + gd.obtenerExcentricidad((Comparable) etiquetasarray[i]));
+        }
+        System.out.println();
+        System.out.println("Centro del grafo: " + gd.centroDelGrafo());
+
+        TAristas resultado = gd.mejorRedElectrica();
 
 
-                //PEDIRLE AYUDA AL PROFE PARA ARREGLAR MÉTODO DE ESTÁNCONECTADOS PASANDOLE LOS VÉRTICES POR PARÁMETRO.
+        System.out.println("Resultado ");
 
+        double cantidadTotalCableado = 0;
+        for(TArista arista : resultado) {
+             cantidadTotalCableado += arista.getCosto();
+        }
+        System.out.println("Cantidad Total del cableado" + " " + cantidadTotalCableado);
 
+        List<String> lineas = new ArrayList<>();
+        lineas.add("Cantidad total cableado" + " " + cantidadTotalCableado);
+        for(TArista arista : resultado) {
+            String linea = arista.getEtiquetaOrigen() + " " + arista.getEtiquetaDestino() + " " + arista.getCosto();
+            System.out.println(linea);
+            lineas.add(linea);
+        }
+
+        String[] lineasArchivo = lineas.toArray(new String[0]);
+        ManejadorArchivosGenerico.escribirArchivo("./src/redelectrica.txt", lineasArchivo);
     }
 }

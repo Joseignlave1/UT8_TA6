@@ -2,7 +2,7 @@
 import java.lang.reflect.Array;
 import java.util.*;
 
-public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido,IGrafoKevinBacon {
+public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido,IGrafoKevinBacon,IGrafoRedElectrica {
 
     protected TAristas lasAristas = new TAristas();
 
@@ -265,4 +265,38 @@ public class TGrafoNoDirigido extends TGrafoDirigido implements IGrafoNoDirigido
         }
     }
 
+    @Override
+    public TAristas mejorRedElectrica() {
+        return null;
+    }
+
+    @Override
+    public TAristas mejorRedElectricaAuxiliar() {
+        Set<TVertice> V = new HashSet<>(this.getVertices().values());
+        TAristas T = new TAristas();
+        Set<TVertice> U = new HashSet<>();
+        for(TVertice v : getVertices().values()) {
+            U.add(v);
+            break;
+        }
+        while(U.size() != V.size()) {
+            double menorCosto = Double.MAX_VALUE;
+            TArista aristaDeMenorCosto = null;
+            LinkedList<TArista> todasLasaristasDelGrafo = this.getLasAristas();
+            for(TArista a : todasLasaristasDelGrafo) {
+                Set<TVertice> diferencia = new HashSet<>(V);
+                diferencia.removeAll(U);
+                TVertice origen = buscarVertice(a.etiquetaOrigen);
+                TVertice destino = buscarVertice(a.etiquetaDestino);
+                if(U.contains(origen) && diferencia.contains(destino) && a.getCosto() < menorCosto && !T.contains(a)) {
+                    menorCosto = a.getCosto();
+                    aristaDeMenorCosto = a;
+                }
+            }
+            T.add(aristaDeMenorCosto);
+            TVertice ver = buscarVertice(aristaDeMenorCosto.etiquetaDestino);
+            U.add(ver);
+        }
+        return T;
+    }
 }
